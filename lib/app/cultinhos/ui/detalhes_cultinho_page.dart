@@ -9,7 +9,10 @@ class DetalhesCultinhoPage extends StatelessWidget {
   const DetalhesCultinhoPage({Key key, this.cultinho}) : super(key: key);
 
   Widget _buildContents() {
-    return Container();
+    return Card(
+      shadowColor: Colors.black38,
+      child: Container(color: Colors.black26,),
+    );
   }
 
   @override

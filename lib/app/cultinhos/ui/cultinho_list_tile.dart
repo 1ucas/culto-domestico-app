@@ -69,44 +69,27 @@ class CultinhoListTile extends StatelessWidget {
   }
 
   Widget _buildContent() {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey[400],
-                  offset: const Offset(4, 4),
-                  blurRadius: 16),
-            ]),
-        padding: EdgeInsets.all(8.0),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-          child: Container(
-            color: Colors.white,
-            child: Row(
-              children: [
-                Expanded(
-                    child: Column(
-                  children: [_buildTitle(), _buildPedidos()],
-                )),
-                Icon(Icons.chevron_right, color: Colors.grey),
-              ],
-            ),
-          ),
-        ),
-      ),
+    return Row(
+      children: [
+        Expanded(
+            child: Column(
+          children: [_buildTitle(), _buildPedidos()],
+        )),
+        Icon(Icons.chevron_right, color: Colors.grey),
+      ],
     );
   }
 
   Widget _buildPedidos() {
     var pedidosTransformados = <PedidoOracao>[];
     cultinho.pedidosOracao.forEach((element) {
-      pedidosTransformados.add(PedidoOracao(categoria: element.categoria, severidade: null, texto: ""));
+      pedidosTransformados.add(PedidoOracao(
+          categoria: element.categoria, severidade: null, texto: ""));
     });
     var pedidosUnicos = pedidosTransformados.toSet().toList();
-    var quantidades = pedidosUnicos.map((pedidoUnico) => pedidosTransformados.where((pedido) => pedido.categoria == pedidoUnico.categoria).length);
+    var quantidades = pedidosUnicos.map((pedidoUnico) => pedidosTransformados
+        .where((pedido) => pedido.categoria == pedidoUnico.categoria)
+        .length);
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: Padding(
@@ -129,6 +112,20 @@ class CultinhoListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildContent();
+    return Card(
+      margin: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+      shadowColor: Colors.black45,
+      elevation: 12.0,
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {
+          print('Card tapped.');
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: _buildContent(),
+        ),
+      ),
+    );
   }
 }
