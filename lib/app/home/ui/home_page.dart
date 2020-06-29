@@ -16,26 +16,26 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RaisedButton(
-            onPressed: () => {},
-            child: Text('Abrir Painel / Perfil Familia / Perfil da Pessoa'),
-          ),
+          // RaisedButton(
+          //   onPressed: () => {},
+          //   child: Text('Abrir Painel / Perfil Familia / Perfil da Pessoa'),
+          // ),
           RaisedButton(
             onPressed: () => _navegarParaCultinhosFeitos(context),
             child: Text('Abrir Lista Cultinhos Feitos'),
           ),
-          RaisedButton(
-            onPressed: () => {},
-            child: Text('Abrir Registro Cultinho'),
-          ), // Botão (  +  )
+          // RaisedButton(
+          //   onPressed: () => {},
+          //   child: Text('Abrir Registro Cultinho'),
+          // ), // Botão (  +  )
           RaisedButton(
             onPressed: () => _navegarParaPedidosOracao(context),
             child: Text('Abrir Registro Pedidos de Oração'),
           ),
-          RaisedButton(
-            onPressed: () => {},
-            child: Text('Abrir Sugestões de Leitura'),
-          ),
+          // RaisedButton(
+          //   onPressed: () => {},
+          //   child: Text('Abrir Sugestões de Leitura'),
+          // ),
         ],
       ),
     );
@@ -50,7 +50,6 @@ class HomePage extends StatelessWidget {
           ),
         ));
   }
-
 
   void _navegarParaCultinhosFeitos(BuildContext context) {
     Navigator.push<PedidosOracaoPage>(

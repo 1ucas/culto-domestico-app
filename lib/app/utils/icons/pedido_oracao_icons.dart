@@ -13,6 +13,9 @@ class PedidoOracaoIcons {
       case Categoria.pessoal: 
         icone = Icons.person;
         break;
+      case Categoria.profissional: 
+        icone = Icons.work;
+        break;
       default:
         icone = Icons.home;
     }
@@ -24,8 +27,11 @@ class PedidoOracaoIcons {
       case Serveridade.importante:
         iconeFinal = Icon(icone, color: Colors.yellow);
         break;
-      default:
+      case Serveridade.normal:
         iconeFinal = Icon(icone, color: Colors.black38);
+        break;
+      default:
+        iconeFinal = Icon(icone, color: Colors.indigo);
     }
     return iconeFinal;
   }
