@@ -21,13 +21,13 @@ class PedidoOracaoIcons {
     }
     Icon iconeFinal;
     switch (pedido.severidade) {
-      case Serveridade.urgente:
+      case Severidade.urgente:
         iconeFinal = Icon(icone, color: Colors.red);
         break;
-      case Serveridade.importante:
+      case Severidade.importante:
         iconeFinal = Icon(icone, color: Colors.yellow);
         break;
-      case Serveridade.normal:
+      case Severidade.normal:
         iconeFinal = Icon(icone, color: Colors.black38);
         break;
       default:

@@ -27,12 +27,12 @@ class CultinhoLocalData {
       PedidoOracao(
           texto: "Pedido de oração 1",
           categoria: Categoria.pessoal,
-          severidade: Serveridade.normal),
+          severidade: Severidade.normal),
       PedidoOracao(
           texto:
               "Pedido de oração 2 com um texto maior para ter quebra de linha na página de cultinhos",
           categoria: Categoria.saude,
-          severidade: Serveridade.urgente),
+          severidade: Severidade.urgente),
     ],
     participantes: [
       Participante(nome: "Jack"),
@@ -50,22 +50,22 @@ class CultinhoLocalData {
       PedidoOracao(
           texto: "Pedido de oração 1",
           categoria: Categoria.pessoal,
-          severidade: Serveridade.normal),
+          severidade: Severidade.normal),
       PedidoOracao(
           texto:
               "Pedido de oração 2 com um texto maior para ter quebra de linha na página de cultinhos",
           categoria: Categoria.profissional,
-          severidade: Serveridade.urgente),
+          severidade: Severidade.urgente),
       PedidoOracao(
           texto:
               "Pedido de oração 3 com um texto maior para ter quebra de linha na página de cultinhos",
           categoria: Categoria.pessoal,
-          severidade: Serveridade.importante),
+          severidade: Severidade.importante),
       PedidoOracao(
           texto:
               "Pedido de oração 4 com um texto maior para ter quebra de linha na página de cultinhos",
           categoria: Categoria.saude,
-          severidade: Serveridade.normal),
+          severidade: Severidade.normal),
     ],
     participantes: [
       Participante(nome: "Lucas", orou: true),

@@ -1,4 +1,5 @@
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
+import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/ui/nova_oracao_page.dart';
 import 'package:culto_domestico_app/app/utils/icons/pedido_oracao_icons.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
   void _removerPedidoOracao(int oracaoId) {
     setState(() {
       listaOracoes.removeWhere((element) => element.hashCode == oracaoId);
+      PedidosOracaoService().removerOracao(oracaoId);
     });
   }
 
@@ -30,7 +32,7 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
       ),
       child: ListTile(
         title: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(pedido.texto),
         ),
         onTap: () {},
@@ -41,10 +43,7 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
           ),
           onPressed: () => _removerPedidoOracao(pedido.hashCode),
         ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(children: [PedidoOracaoIcons.categoria(pedido)]),
-        ),
+        leading: PedidoOracaoIcons.categoria(pedido),
       ),
     );
   }
@@ -64,7 +63,10 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
 
   void _navegarParaNovaOracao(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => NovaOracaoPage()));
+            context, MaterialPageRoute(builder: (context) => NovaOracaoPage()))
+        .then((value) {
+      setState(() {});
+    });
   }
 
   @override

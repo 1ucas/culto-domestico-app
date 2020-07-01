@@ -2,14 +2,13 @@ import 'dart:ui';
 
 import 'package:meta/meta.dart';
 
-enum Serveridade { normal, importante, urgente }
-enum Categoria { saude, profissional, pessoal }
-
+enum Severidade { agradecimento, normal, importante, urgente } 
+enum Categoria { saude, profissional, pessoal, casa, relacionamento, outro }
 
 class PedidoOracao {
 
   final String texto;
-  final Serveridade severidade;
+  final Severidade severidade;
   final Categoria categoria;
 
   PedidoOracao({@required this.texto, @required this.severidade, @required this.categoria});
