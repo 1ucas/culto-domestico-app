@@ -12,7 +12,7 @@ class PedidosOracaoLocalData {
     categoria: Categoria.saude,
     severidade: Serveridade.normal,
     texto:
-        "O Lucas precisa de pilhas para o mouse. Texto grande para testar quebra de linha. Segunda quebra de linha.",
+        "Segunda oração para testes rapidos.",
   );
 
   static List<PedidoOracao> listarTodosPedidosOracao() {

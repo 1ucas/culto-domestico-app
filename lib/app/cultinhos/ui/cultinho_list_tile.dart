@@ -1,5 +1,6 @@
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
 import 'package:culto_domestico_app/app/cultinhos/models/participante.dart';
+import 'package:culto_domestico_app/app/cultinhos/ui/detalhes_cultinho_page.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/utils/icons/pedido_oracao_icons.dart';
 import 'package:flutter/material.dart';
@@ -110,6 +111,10 @@ class CultinhoListTile extends StatelessWidget {
     );
   }
 
+  void _navegarParaDetalhesCultinho(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DetalhesCultinhoPage(cultinho: cultinho)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -118,9 +123,7 @@ class CultinhoListTile extends StatelessWidget {
       elevation: 12.0,
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          print('Card tapped.');
-        },
+        onTap: () => _navegarParaDetalhesCultinho(context),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
           child: _buildContent(),
