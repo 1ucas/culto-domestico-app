@@ -20,4 +20,15 @@ class AppStyle {
       ],
     );
   }
+
+  static Widget subTitulo(String texto) {
+    return Row(
+      children: [
+        Text(
+              texto,
+              style: TextStyle(fontSize: 18, color: AppStyle.InactiveColor),
+            ),
+      ],
+    );
+  }
 }

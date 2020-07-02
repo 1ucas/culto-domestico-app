@@ -1,3 +1,4 @@
+import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +6,7 @@ import 'package:flutter/material.dart';
 class DetalhesCultinhoPage extends StatefulWidget {
   final Cultinho cultinho;
 
-  DetalhesCultinhoPage({Key key, this.cultinho})
-      : super(key: key);
+  DetalhesCultinhoPage({Key key, this.cultinho}) : super(key: key);
 
   @override
   _DetalhesCultinhoPageState createState() => _DetalhesCultinhoPageState();
@@ -22,10 +22,14 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
 
   @override
   void initState() {
-    if(widget.cultinho != null) {
+    if (widget.cultinho != null) {
       var date = widget.cultinho.data;
-      _dateController.text = "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
-      quemOrou = widget.cultinho.participantes.where((element) => element.orou).first.nome;
+      _dateController.text =
+          "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+      quemOrou = widget.cultinho.participantes
+          .where((element) => element.orou)
+          .first
+          .nome;
     }
     super.initState();
   }
@@ -36,14 +40,14 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
     super.dispose();
   }
 
-  Widget _buildForm(BuildContext context) {
+  Widget _buildForm() {
     return ListView(
       children: [
         Form(
           key: Key("123"),
           child: Column(
             children: [
-              _buildData(context),
+              _buildData(),
               _buildPassagemLida(),
               _buildPedidosOracao(),
               _buildQuemOrou(),
@@ -54,7 +58,7 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
     );
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate() async {
     final date = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -62,20 +66,24 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
         lastDate: DateTime.now());
     setState(() {
       if (date != null) {
-        _dateController.text = "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+        _dateController.text =
+            "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
       }
     });
     print(date);
   }
 
-  Widget _buildData(BuildContext context) {
+  Widget _buildData() {
     return GestureDetector(
-      onTap: () async => await _selectDate(context),
+      onTap: () async => await _selectDate(),
       child: AbsorbPointer(
-        child: TextFormField(
-          controller: _dateController,
-          decoration: InputDecoration(labelText: 'Data'),
-          autofocus: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          child: TextFormField(
+            controller: _dateController,
+            decoration: InputDecoration(labelText: 'Data'),
+            autofocus: false,
+          ),
         ),
       ),
     );
@@ -162,17 +170,20 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
   }
 
   Widget _buildPassagemLida() {
-    return Row(
-      children: [
-        Expanded(flex: 3, child: _buildLivroLido()),
-        Expanded(flex: 2, child: _buildCapituloLido()),
-        Expanded(flex: 2, child: _buildVersiculosLidos()),
-        Expanded(flex: 2, child: _buildVersiculosLidos()),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 18.0),
+      child: Row(
+        children: [
+          Expanded(flex: 1, child: _buildLivroLido()),
+          //Expanded(flex: 2, child: _buildCapituloLido()),
+          //Expanded(flex: 2, child: _buildVersiculosLidos()),
+          //Expanded(flex: 2, child: _buildVersiculosLidos()),
+        ],
+      ),
     );
   }
 
-  Widget _buildPedidosOracao() {
+  Widget _buildPedidosOracaoOld() {
     final pedidos = PedidosOracaoService().listarPedidosOracao();
     return Column(children: [
       for (var pedido in pedidos) ...<Widget>[
@@ -190,15 +201,58 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
     ]);
   }
 
-  Widget _buildQuemOrou() {
-    return TextFormField(
-      maxLength: 15,
-      initialValue: quemOrou,
-      decoration: InputDecoration(labelText: 'Quem orou'),
+  Widget _buildPedidosOracao() {
+    final pedidos = PedidosOracaoService().listarPedidosOracao();
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(
+              width: 1.0,
+          color: AppStyle.SecondaryColor,
+        )),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              AppStyle.subTitulo("Pedidos"),
+              SizedBox(
+                child: ListView.builder(
+                  itemCount: pedidos.length,
+                  itemBuilder: (_, index) {
+                    return CheckboxListTile(
+                        value: false,
+                        title: Text(
+                          pedidos[index].texto,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        onChanged: (selected) {
+                          // TODO: MARCAR ORACOES Escolhidas
+                        });
+                  },
+                ),
+                height: 150,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildContents(BuildContext context) {
+  Widget _buildQuemOrou() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: TextFormField(
+        maxLength: 15,
+        initialValue: quemOrou,
+        decoration: InputDecoration(labelText: 'Quem orou'),
+      ),
+    );
+  }
+
+  Widget _buildContents() {
     return Container(
       color: Colors.black12,
       child: Column(
@@ -211,7 +265,7 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
             child: Card(
               shadowColor: Colors.black38,
               elevation: 8.0,
-              child: _buildForm(context),
+              child: _buildForm(),
             ),
           ),
         ],
@@ -223,9 +277,11 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.cultinho != null ? "Editar Cultinho" : "Novo Cultinho"),
+        backgroundColor: AppStyle.PrimaryColor,
+        title:
+            Text(widget.cultinho != null ? "Editar Cultinho" : "Novo Cultinho"),
       ),
-      body: _buildContents(context),
+      body: _buildContents(),
     );
   }
 }
