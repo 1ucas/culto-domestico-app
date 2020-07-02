@@ -1,3 +1,4 @@
+import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:flutter/foundation.dart';
@@ -26,10 +27,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          "Categoria",
-          style: TextStyle(fontSize: 16),
-        ),
+        AppStyle.titulo("Categoria"),
         SizedBox(
           height: 110,
           child: GridView.count(
@@ -68,30 +66,34 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              "Categoria",
-              style: TextStyle(fontSize: 16),
-            ),
+            AppStyle.titulo("Categoria"),
           ],
         ),
-        DropdownButton<Categoria>(
-          value: _categoria,
-          onChanged: (Categoria newValue) {
-            setState(() {
-              _categoria = newValue;
-            });
-          },
-          items: [
-            for (var categoria in Categoria.values) ...[
-              DropdownMenuItem<Categoria>(
-                value: categoria,
-                child: Text(
-                  describeEnum(categoria).toUpperCase(),
-                  style: TextStyle(fontSize: 14, color: Colors.black87),
+        Theme(
+          data: Theme.of(context).copyWith(
+              highlightColor: AppStyle.SecondaryColor,
+              accentColor: AppStyle.PrimaryColor),
+          child: DropdownButton<Categoria>(
+            value: _categoria,
+            autofocus: true,
+            onChanged: (Categoria newValue) {
+              setState(() {
+                _categoria = newValue;
+              });
+            },
+            items: [
+              for (var categoria in Categoria.values) ...[
+                DropdownMenuItem<Categoria>(
+                  value: categoria,
+                  child: Text(
+                    describeEnum(categoria).toUpperCase(),
+                    style:
+                        TextStyle(fontSize: 14, color: AppStyle.PrimaryColor),
+                  ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         ),
       ],
     );
@@ -106,10 +108,8 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
           child: Row(
             children: [
               Expanded(
-                  child: Text(
-                "Tipo",
-                style: TextStyle(fontSize: 16),
-              )),
+                child: AppStyle.titulo("Tipo"),
+              ),
             ],
           ),
         ),
@@ -130,10 +130,10 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
                 borderRadius: BorderRadius.circular(8.0),
                 gradient: LinearGradient(
                   colors: [
-                    Colors.green,
-                    Colors.yellow,
-                    Colors.orange,
-                    Colors.red
+                    AppStyle.SecondaryColor,
+                    AppStyle.WarningColor,
+                    AppStyle.AccentColor,
+                    AppStyle.DangerColor
                   ],
                 ),
               ),
@@ -158,7 +158,9 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
             children: [
               Text(
                 describeEnum(Severidade.values[_severidade]).toUpperCase(),
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(
+                    fontSize: 13,
+                    color: Severidade.values[_severidade].getColor()),
               ),
             ],
           ),
@@ -171,17 +173,27 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Informação",
-          style: TextStyle(fontSize: 16),
-        ),
+        AppStyle.titulo("Informações"),
         Form(
           key: _textoFormKey,
           child: TextFormField(
+            decoration: new InputDecoration(
+                labelText: "",
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                  //  when the TextFormField in unfocused
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppStyle.SecondaryColor),
+                  //  when the TextFormField in focused
+                ),
+                border: UnderlineInputBorder()),
             maxLength: 70,
             validator: (texto) {
               if (texto == null || texto.isEmpty) {
                 return "Informação é um campo obrigatório";
+              } else if(texto.length < 10) {
+                return "Descreva melhor seu pedido de oração";
               } else {
                 return null;
               }
@@ -194,8 +206,11 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
   }
 
   void _salvarOracao() {
-    if(_textoFormKey.currentState.validate()){
-      final oracao = PedidoOracao(categoria: _categoria, severidade: _severidadeOracao, texto: _textoOracaoController.text);
+    if (_textoFormKey.currentState.validate()) {
+      final oracao = PedidoOracao(
+          categoria: _categoria,
+          severidade: _severidadeOracao,
+          texto: _textoOracaoController.text);
       PedidosOracaoService().inserirPedidoOracao(oracao);
       Navigator.pop(context);
     }
@@ -203,7 +218,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
 
   Widget _buildContent() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
           _buildCategoria(),
@@ -224,6 +239,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppStyle.PrimaryColor,
         title: Text("Nova Oração"),
         actions: [
           FlatButton(

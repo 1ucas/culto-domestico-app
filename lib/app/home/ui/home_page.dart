@@ -1,3 +1,4 @@
+import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:culto_domestico_app/app/cultinhos/services/cultinho_service.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/cultinhos_page.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
@@ -10,6 +11,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppStyle.PrimaryColor,
         title: Text('Home'),
       ),
       body: Column(

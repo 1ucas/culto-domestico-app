@@ -28,4 +28,11 @@ class PedidosOracaoLocalData {
   static void removerOracao(int oracaoId) {
     _listaPedidos.removeWhere((element) => element.hashCode == oracaoId);
   }
+
+  static void atualizarOracaoRespondida(int oracaoId) {
+    _listaPedidos.forEach((element) {
+      if(element.hashCode == oracaoId)
+        element.respondida = true;
+    });
+  }
 }

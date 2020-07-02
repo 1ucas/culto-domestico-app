@@ -14,4 +14,8 @@ class PedidosOracaoService {
   void removerOracao(int oracaoId){
     PedidosOracaoLocalData.removerOracao(oracaoId);
   }
+
+  void atualizarOracaoRespondida(int oracaoId){
+    PedidosOracaoLocalData.atualizarOracaoRespondida(oracaoId);
+  }
 }

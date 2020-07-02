@@ -1,7 +1,11 @@
+import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/ui/nova_oracao_page.dart';
+import 'package:culto_domestico_app/app/utils/dialogs/platform_alert_dialog.dart';
 import 'package:culto_domestico_app/app/utils/icons/pedido_oracao_icons.dart';
+import 'package:culto_domestico_app/app/utils/lists/empty_list_content.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PedidosOracaoPage extends StatefulWidget {
@@ -16,11 +20,38 @@ class PedidosOracaoPage extends StatefulWidget {
 class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
   List<PedidoOracao> listaOracoes;
 
-  void _removerPedidoOracao(int oracaoId) {
-    setState(() {
-      listaOracoes.removeWhere((element) => element.hashCode == oracaoId);
-      PedidosOracaoService().removerOracao(oracaoId);
-    });
+  final _filtrosLista = const <bool, Widget>{
+    false: Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text("Orações Ativas"),
+    ),
+    true: Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text("Respostas de Deus"),
+    ),
+  };
+
+  bool _filtrarRespondidas = false;
+
+  get listaRenderizar => listaOracoes.where((oracao) => oracao.respondida == _filtrarRespondidas).toList();
+
+  Future<void> _removerPedidoOracao(int oracaoId) async {
+    final respondida = await PlatformAlertDialog(
+      content: _filtrarRespondidas ? "Deseja realmente apagar essa resposta de oração?" : "Deseja marcar como respondido por Deus, ou apenas excluir?",
+      defaultActionText: _filtrarRespondidas ? "Cancelar" : "Marcar como respondido",
+      cancelActionText: _filtrarRespondidas ? "Excluir" : "Apenas excluir",
+      title: "Atenção",
+    ).show(context);
+    if (respondida) {
+      setState(() {
+        PedidosOracaoService().atualizarOracaoRespondida(oracaoId);
+      });
+    } else {
+      setState(() {
+        listaOracoes.removeWhere((element) => element.hashCode == oracaoId);
+        PedidosOracaoService().removerOracao(oracaoId);
+      });
+    }
   }
 
   Widget _buildItem(BuildContext context, PedidoOracao pedido) {
@@ -39,7 +70,7 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
         trailing: IconButton(
           icon: Icon(
             Icons.delete_forever,
-            color: Colors.red[400],
+            color: AppStyle.DangerColor,
           ),
           onPressed: () => _removerPedidoOracao(pedido.hashCode),
         ),
@@ -48,16 +79,38 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildList() {
     return ListView.separated(
       itemBuilder: (context, index) {
-        return _buildItem(context, widget.itens[index]);
+        return _buildItem(context, listaRenderizar[index]);
       },
       separatorBuilder: (BuildContext context, int index) => Divider(
         height: 0.5,
         thickness: 1,
       ),
-      itemCount: widget.itens.length,
+      itemCount: listaRenderizar.length,
+    );
+  }
+
+  Widget _buildBody() {
+    return Column(
+      children: [
+        CupertinoSegmentedControl<bool>(
+          padding: EdgeInsets.all(16.0),
+          children: _filtrosLista,
+          groupValue: _filtrarRespondidas,
+          onValueChanged: (bool valor) {
+            setState(() {
+              _filtrarRespondidas = valor;
+            });
+          },
+        ),
+        if (listaRenderizar.isNotEmpty) ...[
+          Expanded(child: _buildList())
+        ] else ...[
+          Expanded(child: Center(child: EmptyListContent()))
+        ]
+      ],
     );
   }
 
@@ -74,6 +127,7 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
     listaOracoes = widget.itens;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppStyle.PrimaryColor,
         actions: [
           IconButton(
               icon: Icon(Icons.add, color: Colors.white),
@@ -85,3 +139,5 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
     );
   }
 }
+
+class CupertinoSlidingSegmentedControl {}

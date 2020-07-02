@@ -6,8 +6,8 @@ class EmptyListContent extends StatelessWidget {
 
   const EmptyListContent({
     Key key,
-    this.title = 'Nothing here',
-    this.message = 'Add a new item to get started',
+    this.title = '...Hum...',
+    this.message = 'Por enquanto nada por aqui',
   }) : super(key: key);
 
   @override

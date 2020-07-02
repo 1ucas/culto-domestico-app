@@ -1,8 +1,33 @@
 import 'dart:ui';
 
+import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:meta/meta.dart';
 
 enum Severidade { agradecimento, normal, importante, urgente } 
+
+extension SeveridadeColor on Severidade {
+
+  Color getColor() {
+    switch (this) {
+      case Severidade.urgente:
+        return AppStyle.DangerColor;
+        break;
+      case Severidade.importante:
+        return AppStyle.AccentColor;
+        break;
+      case Severidade.normal:
+        return AppStyle.WarningColor;
+        break;
+      case Severidade.agradecimento:
+        return AppStyle.SecondaryColor;
+        break;
+      default:
+        return AppStyle.InactiveColor;
+    }
+  }
+
+}
+
 enum Categoria { saude, profissional, pessoal, casa, relacionamento, outro }
 
 class PedidoOracao {
@@ -10,8 +35,9 @@ class PedidoOracao {
   final String texto;
   final Severidade severidade;
   final Categoria categoria;
+  bool respondida;
 
-  PedidoOracao({@required this.texto, @required this.severidade, @required this.categoria});
+  PedidoOracao({@required this.texto, @required this.severidade, @required this.categoria, this.respondida = false});
 
   @override
   int get hashCode => hashValues(texto, severidade, categoria);
