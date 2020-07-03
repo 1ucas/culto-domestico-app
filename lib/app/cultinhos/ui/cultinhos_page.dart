@@ -2,7 +2,7 @@ import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
 import 'package:culto_domestico_app/app/cultinhos/services/cultinho_service.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/cultinho_list_tile.dart';
-import 'package:culto_domestico_app/app/cultinhos/ui/detalhes_cultinho_page.dart';
+import 'package:culto_domestico_app/app/cultinhos/ui/novo_cultinho_page.dart';
 import 'package:culto_domestico_app/app/utils/lists/general_list_builder.dart';
 import 'package:flutter/material.dart';
 

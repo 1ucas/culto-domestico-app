@@ -3,7 +3,6 @@ import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_s
 import 'package:flutter/material.dart';
 
 class NovoCultinho extends StatefulWidget {
-
   @override
   _NovoCultinhoState createState() => _NovoCultinhoState();
 }
@@ -27,13 +26,16 @@ class _NovoCultinhoState extends State<NovoCultinho> {
       children: [
         Form(
           key: Key("123"),
-          child: Column(
-            children: [
-              _buildData(),
-              _buildPassagemLida(),
-              _buildPedidosOracao(),
-              _buildQuemOrou(),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                _buildData(),
+                _buildPassagemLida(),
+                _buildPedidosOracao(),
+                _buildQuemOrou(),
+              ],
+            ),
           ),
         )
       ],
@@ -60,10 +62,15 @@ class _NovoCultinhoState extends State<NovoCultinho> {
       onTap: () async => await _selectDate(),
       child: AbsorbPointer(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          padding: const EdgeInsets.only(top: 8.0),
           child: TextFormField(
             controller: _dateController,
-            decoration: InputDecoration(labelText: 'Data'),
+            decoration: InputDecoration(
+              labelText: "Data",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+            ),
             autofocus: false,
           ),
         ),
@@ -100,7 +107,12 @@ class _NovoCultinhoState extends State<NovoCultinho> {
 
   Widget _buildLivroLido() {
     return DropdownButtonFormField<String>(
-      hint: Text("Passagem Lida"),
+      decoration: InputDecoration(
+        labelText: "Passagem Lida",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+      ),
       elevation: 16,
       style: TextStyle(color: Colors.indigo),
       onChanged: (String newValue) {
@@ -153,7 +165,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
 
   Widget _buildPassagemLida() {
     return Padding(
-      padding: const EdgeInsets.only(left: 18.0, right: 18.0, top: 18.0),
+      padding: const EdgeInsets.only(top: 16.0),
       child: Row(
         children: [
           Expanded(flex: 1, child: _buildLivroLido()),
@@ -172,7 +184,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(
-              width: 1.0,
+          width: 1.0,
           color: AppStyle.SecondaryColor,
         )),
         child: Padding(
@@ -207,11 +219,16 @@ class _NovoCultinhoState extends State<NovoCultinho> {
 
   Widget _buildQuemOrou() {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 32.0),
+      padding: const EdgeInsets.only(top: 16, bottom: 24.0),
       child: TextFormField(
+        decoration: InputDecoration(
+          labelText: "Quem orou",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.8),
+          ),
+        ),
         maxLength: 15,
         initialValue: quemOrou,
-        decoration: InputDecoration(labelText: 'Quem orou'),
       ),
     );
   }
@@ -242,8 +259,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppStyle.PrimaryColor,
-        title:
-            Text("Novo Cultinho"),
+        title: Text("Novo Cultinho"),
       ),
       body: _buildContents(),
     );
