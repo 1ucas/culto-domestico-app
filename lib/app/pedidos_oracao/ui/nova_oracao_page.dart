@@ -10,7 +10,7 @@ class NovaOracaoPage extends StatefulWidget {
 }
 
 class _NovaOracaoPageState extends State<NovaOracaoPage> {
-  Categoria _categoria = Categoria.pessoal;
+  Categoria _categoria;
   int _severidade = 0;
   TextEditingController _textoOracaoController = TextEditingController();
   final _textoFormKey = GlobalKey<FormState>();
@@ -20,43 +20,6 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
   void dispose() {
     _textoOracaoController.dispose();
     super.dispose();
-  }
-
-  Widget _buildCategoriaGrid() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AppStyle.titulo("Categoria"),
-        SizedBox(
-          height: 110,
-          child: GridView.count(
-            childAspectRatio: 3,
-            crossAxisCount: 3,
-            children: [
-              for (var categoriaOracao in Categoria.values) ...[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Radio<Categoria>(
-                      value: categoriaOracao,
-                      groupValue: _categoria,
-                      onChanged: (Categoria value) {
-                        setState(() {
-                          _categoria = value;
-                        });
-                      },
-                    ),
-                    Expanded(child: Text(describeEnum(categoriaOracao))),
-                  ],
-                ),
-              ],
-            ],
-          ),
-        )
-      ],
-    );
   }
 
   Widget _buildCategoria() {
@@ -69,31 +32,44 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
             AppStyle.titulo("Categoria"),
           ],
         ),
-        Theme(
-          data: Theme.of(context).copyWith(
-              highlightColor: AppStyle.SecondaryColor,
-              accentColor: AppStyle.PrimaryColor),
-          child: DropdownButton<Categoria>(
-            value: _categoria,
-            autofocus: true,
-            onChanged: (Categoria newValue) {
-              setState(() {
-                _categoria = newValue;
-              });
-            },
-            items: [
-              for (var categoria in Categoria.values) ...[
-                DropdownMenuItem<Categoria>(
-                  value: categoria,
-                  child: Text(
-                    describeEnum(categoria).toUpperCase(),
-                    style:
-                        TextStyle(fontSize: 14, color: AppStyle.PrimaryColor),
-                  ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: FormField<Categoria>(
+              builder: (FormFieldState<Categoria> categoria) {
+            return InputDecorator(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+                labelStyle: TextStyle(fontSize: 16.0),
+                hintText: "",
+              ),
+              isEmpty: _categoria == null,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<Categoria>(
+                  value: _categoria,
+                  autofocus: true,
+                  isDense: true,
+                  onChanged: (Categoria newValue) {
+                    setState(() {
+                      _categoria = newValue;
+                    });
+                  },
+                  items: [
+                    for (var categoria in Categoria.values) ...[
+                      DropdownMenuItem<Categoria>(
+                        value: categoria,
+                        child: Text(
+                          describeEnum(categoria).toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 14, color: AppStyle.PrimaryColor),
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
-              ],
-            ],
-          ),
+              ),
+            );
+          }),
         ),
       ],
     );
@@ -174,31 +150,37 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppStyle.titulo("Informações"),
-        Form(
-          key: _textoFormKey,
-          child: TextFormField(
-            decoration: new InputDecoration(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Form(
+            key: _textoFormKey,
+            child: TextFormField(
+              decoration: new InputDecoration(
+                focusColor: AppStyle.PrimaryColor,
                 labelText: "",
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                  //  when the TextFormField in unfocused
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(
+                      color: AppStyle.SecondaryColor, style: BorderStyle.solid),
                 ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppStyle.SecondaryColor),
-                  //  when the TextFormField in focused
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(
+                      color: AppStyle.SecondaryColor, style: BorderStyle.solid),
                 ),
-                border: UnderlineInputBorder()),
-            maxLength: 70,
-            validator: (texto) {
-              if (texto == null || texto.isEmpty) {
-                return "Informação é um campo obrigatório";
-              } else if(texto.length < 10) {
-                return "Descreva melhor seu pedido de oração";
-              } else {
-                return null;
-              }
-            },
-            controller: _textoOracaoController,
+              ),
+              maxLength: 70,
+              validator: (texto) {
+                if (texto == null || texto.isEmpty) {
+                  return "Informação é um campo obrigatório";
+                } else if (texto.length < 10) {
+                  return "Descreva melhor seu pedido de oração";
+                } else {
+                  return null;
+                }
+              },
+              controller: _textoOracaoController,
+            ),
           ),
         )
       ],
@@ -223,13 +205,13 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
         children: [
           _buildCategoria(),
           SizedBox(
+            height: 20,
+          ),
+          _buildTexto(),
+          SizedBox(
             height: 5,
           ),
           _buildSeveridade(),
-          SizedBox(
-            height: 20,
-          ),
-          _buildTexto()
         ],
       ),
     );

@@ -23,22 +23,31 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
   final _filtrosLista = const <bool, Widget>{
     false: Padding(
       padding: EdgeInsets.all(8.0),
-      child: Text("Orações Ativas"),
+      child: Text(
+        "Orações Ativas",
+      ),
     ),
     true: Padding(
       padding: EdgeInsets.all(8.0),
-      child: Text("Respostas de Deus"),
+      child: Text(
+        "Respostas de Deus",
+      ),
     ),
   };
 
   bool _filtrarRespondidas = false;
 
-  get listaRenderizar => listaOracoes.where((oracao) => oracao.respondida == _filtrarRespondidas).toList();
+  get listaRenderizar => listaOracoes
+      .where((oracao) => oracao.respondida == _filtrarRespondidas)
+      .toList();
 
   Future<void> _removerPedidoOracao(int oracaoId) async {
     final respondida = await PlatformAlertDialog(
-      content: _filtrarRespondidas ? "Deseja realmente apagar essa resposta de oração?" : "Deseja marcar como respondido por Deus, ou apenas excluir?",
-      defaultActionText: _filtrarRespondidas ? "Cancelar" : "Marcar como respondido",
+      content: _filtrarRespondidas
+          ? "Deseja realmente apagar essa resposta de oração?"
+          : "Deseja marcar como respondido por Deus, ou apenas excluir?",
+      defaultActionText:
+          _filtrarRespondidas ? "Cancelar" : "Marcar como respondido",
       cancelActionText: _filtrarRespondidas ? "Excluir" : "Apenas excluir",
       title: "Atenção",
     ).show(context);
@@ -96,6 +105,9 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
     return Column(
       children: [
         CupertinoSegmentedControl<bool>(
+          selectedColor: AppStyle.PrimaryColor,
+          unselectedColor: Colors.white,
+          borderColor: AppStyle.PrimaryColor,
           padding: EdgeInsets.all(16.0),
           children: _filtrosLista,
           groupValue: _filtrarRespondidas,

@@ -4,7 +4,7 @@ class PedidosOracaoLocalData {
 
   static final _pedidoOracao1 = PedidoOracao(
     categoria: Categoria.pessoal,
-    severidade: Severidade.importante,
+    severidade: Severidade.normal,
     texto:
         "O Lucas precisa de pilhas para o mouse. Texto grande para testar quebra de linha. Segunda quebra de linha.",
   );
@@ -15,7 +15,28 @@ class PedidosOracaoLocalData {
         "Segunda oração para testes rapidos.",
   );
 
-  static var _listaPedidos = List.of([_pedidoOracao1, _pedidoOracao2]);
+  static final _pedidoOracao3 = PedidoOracao(
+    categoria: Categoria.casa,
+    severidade: Severidade.importante,
+    texto:
+        "Pedido sobre a casa nova.",
+  );
+
+  static final _pedidoOracao4 = PedidoOracao(
+    categoria: Categoria.profissional,
+    severidade: Severidade.urgente,
+    texto:
+        "Começando um emprego novo na empresa ABC.",
+  );
+
+  static final _pedidoOracao5 = PedidoOracao(
+    categoria: Categoria.relacionamento,
+    severidade: Severidade.importante,
+    texto:
+        "O cartão do supermercado acaba muito rapido com compras de pizza.",
+  );
+
+  static var _listaPedidos = List.of([_pedidoOracao1, _pedidoOracao2, _pedidoOracao3, _pedidoOracao4, _pedidoOracao5]);
 
   static List<PedidoOracao> listarTodosPedidosOracao() {
     return _listaPedidos;

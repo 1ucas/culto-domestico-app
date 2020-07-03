@@ -15,7 +15,7 @@ class AppStyle {
       children: [
         Text(
           texto,
-          style: TextStyle(fontSize: 18, color: SecondaryColor),
+          style: TextStyle(fontSize: 18, color: InactiveColor),
         ),
       ],
     );

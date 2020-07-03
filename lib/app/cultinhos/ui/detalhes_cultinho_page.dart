@@ -1,38 +1,20 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
-import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:flutter/material.dart';
 
-class DetalhesCultinhoPage extends StatefulWidget {
-  final Cultinho cultinho;
-
-  DetalhesCultinhoPage({Key key, this.cultinho}) : super(key: key);
+class NovoCultinho extends StatefulWidget {
 
   @override
-  _DetalhesCultinhoPageState createState() => _DetalhesCultinhoPageState();
+  _NovoCultinhoState createState() => _NovoCultinhoState();
 }
 
-class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
+class _NovoCultinhoState extends State<NovoCultinho> {
   TextEditingController _dateController = TextEditingController();
   String livro;
   int capituloLido;
   List<int> versiculosLidos;
   String _pedidoOracao;
   String quemOrou;
-
-  @override
-  void initState() {
-    if (widget.cultinho != null) {
-      var date = widget.cultinho.data;
-      _dateController.text =
-          "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
-      quemOrou = widget.cultinho.participantes
-          .where((element) => element.orou)
-          .first
-          .nome;
-    }
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -183,24 +165,6 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
     );
   }
 
-  Widget _buildPedidosOracaoOld() {
-    final pedidos = PedidosOracaoService().listarPedidosOracao();
-    return Column(children: [
-      for (var pedido in pedidos) ...<Widget>[
-        RadioListTile<String>(
-          title: Text(pedido.texto),
-          value: pedido.texto,
-          groupValue: _pedidoOracao,
-          onChanged: (String value) {
-            setState(() {
-              _pedidoOracao = value;
-            });
-          },
-        ),
-      ],
-    ]);
-  }
-
   Widget _buildPedidosOracao() {
     final pedidos = PedidosOracaoService().listarPedidosOracao();
     return Padding(
@@ -279,7 +243,7 @@ class _DetalhesCultinhoPageState extends State<DetalhesCultinhoPage> {
       appBar: AppBar(
         backgroundColor: AppStyle.PrimaryColor,
         title:
-            Text(widget.cultinho != null ? "Editar Cultinho" : "Novo Cultinho"),
+            Text("Novo Cultinho"),
       ),
       body: _buildContents(),
     );

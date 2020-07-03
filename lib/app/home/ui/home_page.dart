@@ -1,12 +1,10 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
-import 'package:culto_domestico_app/app/cultinhos/services/cultinho_service.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/cultinhos_page.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/ui/pedidos_oracao_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,12 +55,9 @@ class HomePage extends StatelessWidget {
     Navigator.push<PedidosOracaoPage>(
         context,
         MaterialPageRoute(
-          builder: (_) => CultinhosPage(
-            cultinhos: CultinhoService().listarCultinhosFeitos(),
-          ),
+          builder: (_) => CultinhosPage(),
         ));
   }
-
 }
 
 /*

@@ -1,81 +1,52 @@
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
-import 'package:culto_domestico_app/app/cultinhos/models/participante.dart';
 import 'package:culto_domestico_app/app/home/ui/models/passagem_biblica.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
+import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 
 class CultinhoLocalData {
-  static final cultinho1 = Cultinho(
+
+  static get _cultinho1 => Cultinho(
     data: DateTime.now(),
     leituraFeita: [
       PassagemBiblica(livro: Livro.genesis, capitulo: 1, versiculos: [1, 2, 3]),
       PassagemBiblica(livro: Livro.exodo, capitulo: 5, versiculos: [12, 13]),
     ],
     pedidosOracao: [],
-    participantes: [
-      Participante(nome: "Lucas"),
-      Participante(nome: "Jaspion", orou: true),
-    ],
+    quemOrou: "Lucas",
   );
 
-  static final cultinho2 = Cultinho(
+  static get _cultinho2 => Cultinho(
     data: DateTime.now().add(Duration(days: -5)),
     leituraFeita: [
       PassagemBiblica(livro: Livro.numeros, capitulo: 1, versiculos: [1, 2, 3]),
       PassagemBiblica(livro: Livro.numeros, capitulo: 5, versiculos: [12, 13]),
     ],
-    pedidosOracao: [
-      PedidoOracao(
-          texto: "Pedido de oração 1",
-          categoria: Categoria.pessoal,
-          severidade: Severidade.normal),
-      PedidoOracao(
-          texto:
-              "Pedido de oração 2 com um texto maior para ter quebra de linha na página de cultinhos",
-          categoria: Categoria.saude,
-          severidade: Severidade.urgente),
-    ],
-    participantes: [
-      Participante(nome: "Jack"),
-      Participante(nome: "Antonio", orou: true),
-    ],
+    pedidosOracao: PedidosOracaoService().listarPedidosOracao().where((element) => element.severidade == Severidade.importante && !element.respondida).toList(),
+    quemOrou: "Antonio",
   );
 
-  static final cultinho3 = Cultinho(
+  static get _cultinho3 => Cultinho(
     data: DateTime.now().add(Duration(days: -8)),
     leituraFeita: [
       PassagemBiblica(livro: Livro.numeros, capitulo: 1, versiculos: [1, 2, 3]),
       PassagemBiblica(livro: Livro.numeros, capitulo: 5, versiculos: [12, 13]),
     ],
-    pedidosOracao: [
-      PedidoOracao(
-          texto: "Pedido de oração 1",
-          categoria: Categoria.pessoal,
-          severidade: Severidade.normal),
-      PedidoOracao(
-          texto:
-              "Pedido de oração 2 com um texto maior para ter quebra de linha na página de cultinhos",
-          categoria: Categoria.profissional,
-          severidade: Severidade.urgente),
-      PedidoOracao(
-          texto:
-              "Pedido de oração 3 com um texto maior para ter quebra de linha na página de cultinhos",
-          categoria: Categoria.pessoal,
-          severidade: Severidade.importante),
-      PedidoOracao(
-          texto:
-              "Pedido de oração 4 com um texto maior para ter quebra de linha na página de cultinhos",
-          categoria: Categoria.saude,
-          severidade: Severidade.normal),
+    pedidosOracao: PedidosOracaoService().listarPedidosOracao().where((element) => element.severidade == Severidade.urgente && !element.respondida).toList(),
+    quemOrou: "Lucas 2",
+  );
+
+  static get _cultinho4 => Cultinho(
+    data: DateTime.now().add(Duration(days: -8)),
+    leituraFeita: [
+      PassagemBiblica(livro: Livro.numeros, capitulo: 1, versiculos: [1, 2, 3]),
+      PassagemBiblica(livro: Livro.numeros, capitulo: 5, versiculos: [12, 13]),
     ],
-    participantes: [
-      Participante(nome: "Lucas", orou: true),
-      Participante(nome: "Jaspion", orou: true),
-      Participante(nome: "Pericleison", orou: true),
-    ],
+    pedidosOracao: PedidosOracaoService().listarPedidosOracao().where((element) => !element.respondida).toList(),
+    quemOrou: "Jack",
   );
 
 
   static List<Cultinho> listarCultinhosFeitos() {
-    return [cultinho1, cultinho2, cultinho3];
+    return [_cultinho1, _cultinho2, _cultinho3, _cultinho4];
   }
 }

@@ -1,17 +1,25 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
+import 'package:culto_domestico_app/app/cultinhos/services/cultinho_service.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/cultinho_list_tile.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/detalhes_cultinho_page.dart';
 import 'package:culto_domestico_app/app/utils/lists/general_list_builder.dart';
 import 'package:flutter/material.dart';
 
-class CultinhosPage extends StatelessWidget {
-  final List<Cultinho> cultinhos;
+class CultinhosPage extends StatefulWidget {
+  @override
+  _CultinhosPageState createState() => _CultinhosPageState();
+}
 
-  const CultinhosPage({Key key, @required this.cultinhos}) : super(key: key);
+class _CultinhosPageState extends State<CultinhosPage> {
+  List<Cultinho> cultinhos = CultinhoService().listarCultinhosFeitos();
 
-  void _navegarParaDetalhesCultinho(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => DetalhesCultinhoPage()));
+  void _navegarParaNovoCultinho(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NovoCultinho())).then((value) {
+      setState(() {
+        cultinhos = CultinhoService().listarCultinhosFeitos();
+      });
+    });
   }
 
   Widget _buildBody(BuildContext context) {
@@ -31,7 +39,7 @@ class CultinhosPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add, color: Colors.white),
-            onPressed: () => _navegarParaDetalhesCultinho(context),
+            onPressed: () => _navegarParaNovoCultinho(context),
           )
         ],
       ),
