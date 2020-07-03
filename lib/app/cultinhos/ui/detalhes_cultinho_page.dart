@@ -207,7 +207,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
 
   Widget _buildQuemOrou() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 32.0),
       child: TextFormField(
         maxLength: 15,
         initialValue: quemOrou,

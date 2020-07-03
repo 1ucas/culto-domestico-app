@@ -1,62 +1,53 @@
-import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
+import 'package:culto_domestico_app/app/common/styles/app_bottom_bar.dart';
+import 'package:culto_domestico_app/app/common/styles/app_tab_item.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/cultinhos_page.dart';
+import 'package:culto_domestico_app/app/dashboard/ui/dashboard_page.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/ui/pedidos_oracao_page.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppStyle.PrimaryColor,
-        title: Text('Home'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // RaisedButton(
-          //   onPressed: () => {},
-          //   child: Text('Abrir Painel / Perfil Familia / Perfil da Pessoa'),
-          // ),
-          RaisedButton(
-            onPressed: () => _navegarParaCultinhosFeitos(context),
-            child: Text('Abrir Lista Cultinhos Feitos'),
-          ),
-          // RaisedButton(
-          //   onPressed: () => {},
-          //   child: Text('Abrir Registro Cultinho'),
-          // ), // Botão (  +  )
-          RaisedButton(
-            onPressed: () => _navegarParaPedidosOracao(context),
-            child: Text('Abrir Registro Pedidos de Oração'),
-          ),
-          // RaisedButton(
-          //   onPressed: () => {},
-          //   child: Text('Abrir Sugestões de Leitura'),
-          // ),
-        ],
-      ),
-    );
-  }
+  _HomePageState createState() => _HomePageState();
+}
 
-  void _navegarParaPedidosOracao(BuildContext context) {
-    Navigator.push<PedidosOracaoPage>(
-        context,
-        MaterialPageRoute(
-          builder: (_) => PedidosOracaoPage(
+class _HomePageState extends State<HomePage> {
+  var _currentTab = AppTabItem.cultinhos;
+
+  final Map<AppTabItem, GlobalKey<NavigatorState>> navigatorKeys = {
+    AppTabItem.cultinhos: GlobalKey<NavigatorState>(),
+    AppTabItem.oracoes: GlobalKey<NavigatorState>(),
+    AppTabItem.acompanhamento: GlobalKey<NavigatorState>(),
+  };
+
+  Map<AppTabItem, WidgetBuilder> get widgetBuilders {
+    return {
+      AppTabItem.cultinhos: (_) => CultinhosPage(),
+      AppTabItem.oracoes: (_) => PedidosOracaoPage(
             itens: PedidosOracaoService().listarPedidosOracao(),
           ),
-        ));
+      AppTabItem.acompanhamento: (_) => DashboardPage(),
+    };
   }
 
-  void _navegarParaCultinhosFeitos(BuildContext context) {
-    Navigator.push<PedidosOracaoPage>(
-        context,
-        MaterialPageRoute(
-          builder: (_) => CultinhosPage(),
-        ));
+  void _select(AppTabItem item) {
+    if (item == _currentTab) {
+      navigatorKeys[item].currentState.popUntil((route) => route.isFirst);
+    } else {
+      setState(() {
+        _currentTab = item;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBottomBar(
+      navigatorKeys: navigatorKeys,
+      widgetBuilders: widgetBuilders,
+      currentTab: _currentTab,
+      onSelectTab: _select,
+    );
   }
 }
 
