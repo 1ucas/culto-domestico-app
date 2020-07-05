@@ -42,7 +42,7 @@ class AppBottomBar extends StatelessWidget {
   }
 
   BottomNavigationBarItem _buildItem(AppTabItem tabItem) {
-    final color = currentTab == tabItem ? AppStyle.SecondaryColor : Colors.white;
+    final color = currentTab == tabItem ? Colors.white : Colors.black87;
     final itemData = TabItemData.allTabs[tabItem];
     return BottomNavigationBarItem(
       icon: Icon(

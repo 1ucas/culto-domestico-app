@@ -1,5 +1,7 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
+import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
+import 'package:culto_domestico_app/app/utils/dialogs/platform_list_dialog.dart';
 import 'package:flutter/material.dart';
 
 class NovoCultinho extends StatefulWidget {
@@ -9,6 +11,7 @@ class NovoCultinho extends StatefulWidget {
 
 class _NovoCultinhoState extends State<NovoCultinho> {
   TextEditingController _dateController = TextEditingController();
+  TextEditingController _pedidosController = TextEditingController();
   String livro;
   int capituloLido;
   List<int> versiculosLidos;
@@ -18,6 +21,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   @override
   void dispose() {
     _dateController.dispose();
+    _pedidosController.dispose();
     super.dispose();
   }
 
@@ -57,6 +61,15 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     print(date);
   }
 
+  Future<void> _selectPedidos() async {
+    final pedidos = PedidosOracaoService().listarPedidosOracao();
+    showDialog(context: context, builder: (_) { return PlatformListDialog(
+      content: pedidos,
+      defaultActionText: "Escolher",
+      title: "Orações Hoje",
+    ); });
+  }
+
   Widget _buildData() {
     return GestureDetector(
       onTap: () async => await _selectDate(),
@@ -64,44 +77,20 @@ class _NovoCultinhoState extends State<NovoCultinho> {
         child: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: TextFormField(
+            enabled: false,
             controller: _dateController,
             decoration: InputDecoration(
               labelText: "Data",
+              disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black38)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(color: Colors.black38),
               ),
             ),
             autofocus: false,
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildVersiculosLidos() {
-    return DropdownButtonFormField<int>(
-      hint: Text("Versiculo"),
-      elevation: 16,
-      style: TextStyle(color: Colors.indigo),
-      onChanged: (int newValue) {
-        setState(() {
-          versiculosLidos.clear();
-          versiculosLidos.add(newValue);
-        });
-      },
-      validator: (int value) {
-        if (value == null) {
-          return 'Please enter a valid type of business';
-        } else {
-          return null;
-        }
-      },
-      items: <int>[1, 2].map<DropdownMenuItem<int>>((int value) {
-        return DropdownMenuItem<int>(
-          value: value,
-          child: Text(value.toString()),
-        );
-      }).toList(),
     );
   }
 
@@ -137,32 +126,6 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     );
   }
 
-  Widget _buildCapituloLido() {
-    return DropdownButtonFormField<int>(
-      hint: Text("Capitulo"),
-      elevation: 16,
-      style: TextStyle(color: Colors.indigo),
-      onChanged: (int newValue) {
-        setState(() {
-          capituloLido = newValue;
-        });
-      },
-      validator: (int value) {
-        if (value == null) {
-          return 'Please enter a valid type of business';
-        } else {
-          return null;
-        }
-      },
-      items: <int>[1, 2].map<DropdownMenuItem<int>>((int value) {
-        return DropdownMenuItem<int>(
-          value: value,
-          child: Text(value.toString()),
-        );
-      }).toList(),
-    );
-  }
-
   Widget _buildPassagemLida() {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
@@ -178,39 +141,23 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   }
 
   Widget _buildPedidosOracao() {
-    final pedidos = PedidosOracaoService().listarPedidosOracao();
-    return Padding(
-      padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-          width: 1.0,
-          color: AppStyle.SecondaryColor,
-        )),
+    return GestureDetector(
+      onTap: () async => await _selectPedidos(),
+      child: AbsorbPointer(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              AppStyle.subTitulo("Pedidos"),
-              SizedBox(
-                child: ListView.builder(
-                  itemCount: pedidos.length,
-                  itemBuilder: (_, index) {
-                    return CheckboxListTile(
-                        value: false,
-                        title: Text(
-                          pedidos[index].texto,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        onChanged: (selected) {
-                          // TODO: MARCAR ORACOES Escolhidas
-                        });
-                  },
-                ),
-                height: 150,
+          padding: const EdgeInsets.only(top: 8.0),
+          child: TextFormField(
+            enabled: false,
+            controller: _pedidosController,
+            decoration: InputDecoration(
+              labelText: "Pedidos",
+              disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black38)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(color: Colors.black38),
               ),
-            ],
+            ),
+            autofocus: false,
           ),
         ),
       ),
