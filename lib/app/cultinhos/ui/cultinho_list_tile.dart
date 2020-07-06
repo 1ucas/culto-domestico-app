@@ -1,5 +1,7 @@
+import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
+import 'package:culto_domestico_app/app/utils/dialogs/platform_alert_dialog.dart';
 import 'package:culto_domestico_app/app/utils/icons/pedido_oracao_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +45,7 @@ class CultinhoListTile extends StatelessWidget {
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -55,7 +57,26 @@ class CultinhoListTile extends StatelessWidget {
             ],
           ),
         ),
-        Icon(Icons.chevron_right, color: Colors.grey),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 16.0),
+          child: IconButton(
+              icon: Icon(Icons.delete_forever, color: AppStyle.DangerColor),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => PlatformAlertDialog(
+                    title: "Confirmação",
+                    content: "Deseja excluir esse cultinho?",
+                    defaultActionText: "Sim",
+                    cancelActionText: "Não",
+                  ),
+                ).then((apagou) {
+                  if (apagou) {
+                    // TODO: Apagar da lista
+                  }
+                });
+              }),
+        ),
       ],
     );
   }
@@ -110,7 +131,7 @@ class CultinhoListTile extends StatelessWidget {
         onTap: () => _navegarParaDetalhesCultinho(context),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
-          child: _buildContent(),
+          child: _buildContent(context),
         ),
       ),
     );
