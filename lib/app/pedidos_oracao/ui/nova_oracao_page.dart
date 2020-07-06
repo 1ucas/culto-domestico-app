@@ -155,6 +155,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
           child: Form(
             key: _textoFormKey,
             child: TextFormField(
+              maxLines: null,
               decoration: new InputDecoration(
                 focusColor: AppStyle.PrimaryColor,
                 labelText: "",
@@ -199,20 +200,22 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
   }
 
   Widget _buildContent() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildCategoria(),
-          SizedBox(
-            height: 20,
-          ),
-          _buildTexto(),
-          SizedBox(
-            height: 5,
-          ),
-          _buildSeveridade(),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            _buildCategoria(),
+            SizedBox(
+              height: 20,
+            ),
+            _buildTexto(),
+            SizedBox(
+              height: 5,
+            ),
+            _buildSeveridade(),
+          ],
+        ),
       ),
     );
   }
