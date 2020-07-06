@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 
 class CultinhoListTile extends StatelessWidget {
   final Cultinho cultinho;
+  final void Function(String id)onDelete;
 
-  const CultinhoListTile({Key key, @required this.cultinho}) : super(key: key);
+  const CultinhoListTile({Key key, @required this.cultinho, @required this.onDelete}) : super(key: key);
 
   Widget _buildQuemOrou() {
     final quemOrou = cultinho.quemOrou;
@@ -72,7 +73,7 @@ class CultinhoListTile extends StatelessWidget {
                   ),
                 ).then((apagou) {
                   if (apagou) {
-                    // TODO: Apagar da lista
+                    onDelete(cultinho.id);
                   }
                 });
               }),

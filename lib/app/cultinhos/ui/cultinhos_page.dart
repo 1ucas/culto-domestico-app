@@ -15,7 +15,9 @@ class _CultinhosPageState extends State<CultinhosPage> {
   List<Cultinho> cultinhos = CultinhoService().listarCultinhosFeitos();
 
   void _navegarParaNovoCultinho(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NovoCultinho())).then((value) {
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NovoCultinho()))
+        .then((value) {
       setState(() {
         cultinhos = CultinhoService().listarCultinhosFeitos();
       });
@@ -24,7 +26,12 @@ class _CultinhosPageState extends State<CultinhosPage> {
 
   Widget _buildBody(BuildContext context) {
     return GeneralListBuilder<Cultinho>(
-      itemBuilder: (context, cultinho) => CultinhoListTile(cultinho: cultinho),
+      itemBuilder: (context, cultinho) => CultinhoListTile(
+        cultinho: cultinho,
+        onDelete: (id) {
+          cultinhos.removeWhere((element) => element.id == id);
+        },
+      ),
       items: cultinhos,
       separated: false,
     );
