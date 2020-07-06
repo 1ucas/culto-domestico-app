@@ -45,8 +45,13 @@ class CultinhoLocalData {
     quemOrou: "Jack",
   );
 
+  static var _listaCultinhos = <Cultinho>[_cultinho1, _cultinho2, _cultinho3, _cultinho4].toList();
 
   static List<Cultinho> listarCultinhosFeitos() {
-    return [_cultinho1, _cultinho2, _cultinho3, _cultinho4];
+    return _listaCultinhos;
+  }
+
+  static void removerCultinho({String id}) {
+    _listaCultinhos.removeWhere((element) => element.id == id);
   }
 }

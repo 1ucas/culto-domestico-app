@@ -5,4 +5,8 @@ class CultinhoService {
   List<Cultinho> listarCultinhosFeitos() {
     return CultinhoLocalData.listarCultinhosFeitos();
   }
+
+  void removerCultinho({String id}) {
+    return CultinhoLocalData.removerCultinho(id: id);
+  }
 }
