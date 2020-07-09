@@ -1,8 +1,11 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
+import 'package:culto_domestico_app/app/cultinhos/ui/passagem_biblica_dialog.dart';
+import 'package:culto_domestico_app/app/home/ui/models/passagem_biblica.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:culto_domestico_app/app/utils/dialogs/pedido_oracao_list_dialog_item.dart';
 import 'package:culto_domestico_app/app/utils/dialogs/platform_list_dialog.dart';
+import 'package:culto_domestico_app/app/utils/dropdown/app_dropdown_field.dart';
 import 'package:flutter/material.dart';
 
 class NovoCultinho extends StatefulWidget {
@@ -13,6 +16,7 @@ class NovoCultinho extends StatefulWidget {
 class _NovoCultinhoState extends State<NovoCultinho> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _pedidosController = TextEditingController();
+  TextEditingController _passagemLidaController = TextEditingController();
   TextEditingController _quemOrouController = TextEditingController();
   String livro;
   int capituloLido;
@@ -24,6 +28,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     _dateController.dispose();
     _pedidosController.dispose();
     _quemOrouController.dispose();
+    _passagemLidaController.dispose();
     super.dispose();
   }
 
@@ -60,7 +65,6 @@ class _NovoCultinhoState extends State<NovoCultinho> {
             "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
       }
     });
-    print(date);
   }
 
   Future<void> _selectPedidos() async {
@@ -81,7 +85,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
         );
       },
     ).then((listaSelecao) {
-      var pedidosFiltrados = [];
+      var pedidosFiltrados = List<PedidoOracao>();
       if (listaSelecao != null && listaSelecao.length > 0) {
         _pedidosController.text =
             "Pedidos Escolhidos: ${listaSelecao.where((escolhido) => escolhido).length}";
@@ -95,6 +99,19 @@ class _NovoCultinhoState extends State<NovoCultinho> {
       }
 
       _pedidosOracao = pedidosFiltrados;
+    });
+  }
+
+  Future<void> _selectPassagem() async {
+    showDialog<List<PassagemBiblica>>(
+      context: context,
+      builder: (_) {
+        return PassagemBiblicaDialog();
+      },
+    ).then((value) {
+      setState(() {
+        _passagemLidaController.text = "Passagens: $value";
+      });
     });
   }
 
@@ -123,48 +140,16 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     );
   }
 
-  Widget _buildLivroLido() {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: "Passagem Lida",
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-      ),
-      elevation: 16,
-      style: TextStyle(color: Colors.indigo),
-      onChanged: (String newValue) {
-        setState(() {
-          livro = newValue;
-        });
-      },
-      validator: (String value) {
-        if (value?.isEmpty ?? true) {
-          return 'Please enter a valid type of business';
-        } else {
-          return null;
-        }
-      },
-      items: <String>['Genesis', 'Exodo']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
-  }
-
   Widget _buildPassagemLida() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: Row(
-        children: [
-          Expanded(flex: 1, child: _buildLivroLido()),
-          //Expanded(flex: 2, child: _buildCapituloLido()),
-          //Expanded(flex: 2, child: _buildVersiculosLidos()),
-          //Expanded(flex: 2, child: _buildVersiculosLidos()),
-        ],
+    return GestureDetector(
+      onTap: () async => await _selectPassagem(),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+        child: AppDropdownField<String>(
+          titulo: "Passagem Bíblica",
+          onChanged: (String newValue) {},
+          items: [],
+        ),
       ),
     );
   }

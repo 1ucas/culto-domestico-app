@@ -8,8 +8,8 @@ class CultinhoLocalData {
   static get _cultinho1 => Cultinho(
     data: DateTime.now(),
     leituraFeita: [
-      PassagemBiblica(livro: Livro.genesis, capitulo: 1, versiculos: [1, 2, 3]),
-      PassagemBiblica(livro: Livro.exodo, capitulo: 5, versiculos: [12, 13]),
+      PassagemBiblica(livro: Livro.genesis, capitulos: [1], versiculos: [1, 2, 3]),
+      PassagemBiblica(livro: Livro.exodo, capitulos: [5], versiculos: [12, 13]),
     ],
     pedidosOracao: [],
     quemOrou: "Lucas",
@@ -18,8 +18,8 @@ class CultinhoLocalData {
   static get _cultinho2 => Cultinho(
     data: DateTime.now().add(Duration(days: -5)),
     leituraFeita: [
-      PassagemBiblica(livro: Livro.numeros, capitulo: 1, versiculos: [1, 2, 3]),
-      PassagemBiblica(livro: Livro.numeros, capitulo: 5, versiculos: [12, 13]),
+      PassagemBiblica(livro: Livro.numeros, capitulos: [1], versiculos: [1, 2, 3]),
+      PassagemBiblica(livro: Livro.numeros, capitulos: [5], versiculos: [12, 13]),
     ],
     pedidosOracao: PedidosOracaoService().listarPedidosOracao().where((element) => element.severidade == Severidade.importante && !element.respondida).toList(),
     quemOrou: "Antonio",
@@ -28,8 +28,8 @@ class CultinhoLocalData {
   static get _cultinho3 => Cultinho(
     data: DateTime.now().add(Duration(days: -8)),
     leituraFeita: [
-      PassagemBiblica(livro: Livro.numeros, capitulo: 1, versiculos: [1, 2, 3]),
-      PassagemBiblica(livro: Livro.numeros, capitulo: 5, versiculos: [12, 13]),
+      PassagemBiblica(livro: Livro.numeros, capitulos: [1], versiculos: [1, 2, 3]),
+      PassagemBiblica(livro: Livro.numeros, capitulos: [5], versiculos: [12, 13]),
     ],
     pedidosOracao: PedidosOracaoService().listarPedidosOracao().where((element) => element.severidade == Severidade.urgente && !element.respondida).toList(),
     quemOrou: "Lucas 2",
@@ -38,8 +38,8 @@ class CultinhoLocalData {
   static get _cultinho4 => Cultinho(
     data: DateTime.now().add(Duration(days: -8)),
     leituraFeita: [
-      PassagemBiblica(livro: Livro.numeros, capitulo: 1, versiculos: [1, 2, 3]),
-      PassagemBiblica(livro: Livro.numeros, capitulo: 5, versiculos: [12, 13]),
+      PassagemBiblica(livro: Livro.numeros, capitulos: [1], versiculos: [1, 2, 3]),
+      PassagemBiblica(livro: Livro.numeros, capitulos: [5], versiculos: [12, 13]),
     ],
     pedidosOracao: PedidosOracaoService().listarPedidosOracao().where((element) => !element.respondida).toList(),
     quemOrou: "Jack",

@@ -1,7 +1,7 @@
 
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
+import 'package:culto_domestico_app/app/utils/dialogs/platform_list_dialog.dart';
 import 'package:meta/meta.dart';
-import 'package:culto_domestico_app/app/utils/dialogs/list_dialog_item.dart';
 
 class PedidoOracaoListDialogItem extends ListDialogItem<PedidoOracao> {
   
