@@ -77,4 +77,20 @@ class PassagemBiblica {
 
   PassagemBiblica({@required this.livro, @required this.capitulos, @required this.versiculos});
 
+  @override
+  String toString() 
+  {
+    final livro = this.livro.nome.substring(0, 2);
+    var capitulos = "${this.capitulos[0].toString()}";
+    if(this.capitulos.length == 2) {
+      capitulos += " - ${this.capitulos[1].toString()}";
+    }
+    var versiculos = "${this.versiculos[0].toString()}";
+    if(this.versiculos.length == 2) {
+      versiculos += " - ${this.versiculos[1].toString()}";
+    }
+
+    return "$livro. $capitulos : $versiculos";
+  }
+
 }

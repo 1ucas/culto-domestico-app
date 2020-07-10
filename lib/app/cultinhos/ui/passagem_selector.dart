@@ -4,7 +4,6 @@ import 'package:culto_domestico_app/app/utils/dropdown/app_numeric_field.dart';
 import 'package:flutter/material.dart';
 
 class PassagemSelector extends StatefulWidget {
-
   final state = _PassagemSelectorState();
 
   List<PassagemBiblica> validate() {
@@ -46,13 +45,13 @@ class _PassagemSelectorState extends State<PassagemSelector> {
   List<PassagemBiblica> validate() {
     var valid = _formKey.currentState.validate();
     if (valid) {
-      var capitulos = <int>[];
-      var versiculos = <int>[];
+      var capitulos = <int>[int.tryParse(_capituloInicioTextController.text), int.tryParse(_capituloFimTextController.text)].where((value) => value != null);
+      var versiculos = <int>[int.tryParse(_versiculoInicioTextController.text), int.tryParse(_versiculoFimTextController.text)].where((value) => value != null);
       return [
         PassagemBiblica(
             livro: _livroEscolhido,
-            capitulos: capitulos,
-            versiculos: versiculos)
+            capitulos: capitulos.toList(),
+            versiculos: versiculos.toList())
       ];
     } else {
       return null;
@@ -182,9 +181,15 @@ class _PassagemSelectorState extends State<PassagemSelector> {
                     int valorInicial =
                         int.tryParse(_versiculoInicioTextController.text);
                     int valorFinal = int.tryParse(value);
+                    bool apenasUmCapitulo =
+                        int.tryParse(_capituloFimTextController.text) == null;
                     if (valorInicial != null) {
-                      if (valorFinal != null && valorFinal <= 0) {
-                        return "Incorreto";
+                      if (valorFinal != null) {
+                        if (valorFinal <= 0 ||
+                            apenasUmCapitulo &&
+                                valorFinal <= valorInicial) {
+                          return "Incorreto";
+                        }
                       }
                     } else if (valorFinal != null) {
                       return "Incorreto";

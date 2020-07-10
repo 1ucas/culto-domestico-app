@@ -5,7 +5,6 @@ import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:culto_domestico_app/app/utils/dialogs/pedido_oracao_list_dialog_item.dart';
 import 'package:culto_domestico_app/app/utils/dialogs/platform_list_dialog.dart';
-import 'package:culto_domestico_app/app/utils/dropdown/app_dropdown_field.dart';
 import 'package:flutter/material.dart';
 
 class NovoCultinho extends StatefulWidget {
@@ -110,7 +109,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
       },
     ).then((value) {
       setState(() {
-        _passagemLidaController.text = "Passagens: $value";
+        _passagemLidaController.text = "Passagem: ${value.toString()}";
       });
     });
   }
@@ -143,12 +142,23 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   Widget _buildPassagemLida() {
     return GestureDetector(
       onTap: () async => await _selectPassagem(),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: AppDropdownField<String>(
-          titulo: "Passagem Bíblica",
-          onChanged: (String newValue) {},
-          items: [],
+      child: AbsorbPointer(
+              child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: TextFormField(
+              enabled: false,
+              controller: _passagemLidaController,
+              decoration: InputDecoration(
+                labelText: "Passagem Bíblica",
+                disabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black38)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(color: Colors.black38),
+                ),
+              ),
+              autofocus: false,
+            ),
         ),
       ),
     );
