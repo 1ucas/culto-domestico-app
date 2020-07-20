@@ -54,7 +54,7 @@ class CultinhoListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-        "Passagem Lida: ${cultinho.leituraFeita == null ? "" : cultinho.leituraFeita.first}",
+        "Passagem Lida: ${cultinho.leituraFeita == null || cultinho.leituraFeita.length == 0 ? "" : cultinho.leituraFeita.first}",
       ),
     );
   }

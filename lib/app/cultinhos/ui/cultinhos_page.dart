@@ -12,12 +12,18 @@ class CultinhosPage extends StatefulWidget {
 }
 
 class _CultinhosPageState extends State<CultinhosPage> {
-  List<Cultinho> cultinhos = CultinhoService().listarCultinhosFeitos();
+  Future<List<Cultinho>> cultinhos;
 
-  void _navegarParaNovoCultinho(BuildContext context) {
+  @override
+  void initState() {
+    super.initState();
+    cultinhos = CultinhoService().listarCultinhosFeitos();
+  }
+
+  void _navegarParaNovoCultinho(BuildContext context) async {
     Navigator.push(
             context, MaterialPageRoute(builder: (context) => NovoCultinho()))
-        .then((value) {
+        .then((_) {
       setState(() {
         cultinhos = CultinhoService().listarCultinhosFeitos();
       });
@@ -25,16 +31,27 @@ class _CultinhosPageState extends State<CultinhosPage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return GeneralListBuilder<Cultinho>(
-      itemBuilder: (context, cultinho) => CultinhoListTile(
-        cultinho: cultinho,
-        onDelete: (id) {
-          cultinhos.removeWhere((element) => element.id == id);
-          CultinhoService().removerCultinho(id: id);
+    return FutureBuilder(
+      future: cultinhos,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return GeneralListBuilder<Cultinho>(
+            itemBuilder: (context, cultinho) => CultinhoListTile(
+                cultinho: cultinho,
+                onDelete: (id) {
+                  CultinhoService().removerCultinho(id: id).then((_) {
+                    cultinhos = CultinhoService().listarCultinhosFeitos();
+                  });
+                }),
+            items: snapshot.data,
+            separated: false,
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
-      ),
-      items: cultinhos,
-      separated: false,
+      },
     );
   }
 

@@ -127,8 +127,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
         leituraFeita: _passagensLidas,
         pedidosOracao: _pedidosOracao
       );
-      CultinhoService().salvarCultinho(cultinho: novoCultinho);
-      Navigator.pop(context);
+      CultinhoService().salvarCultinho(cultinho: novoCultinho).then((_) => Navigator.pop(context));
     }
   }
 
@@ -214,13 +213,13 @@ class _NovoCultinhoState extends State<NovoCultinho> {
         controller: _quemOrouController,
         decoration: InputDecoration(
           labelText: "Quem orou",
-          labelStyle: TextStyle(color: AppStyle.PrimaryColor),
+          labelStyle: TextStyle(color: Colors.black38),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppStyle.PrimaryColor),
+            borderSide: BorderSide(color: Colors.black38),
             borderRadius: BorderRadius.circular(5.8),
           ),
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: AppStyle.PrimaryColor),
+            borderSide: BorderSide(color: Colors.black38),
             borderRadius: BorderRadius.circular(5.8),
           ),
         ),

@@ -116,8 +116,8 @@ class PassagemBiblica {
 
   PassagemBiblica.fromJson(Map<String, dynamic> json)
       : livro = Livro.values[json['livro'] as int],
-        capitulos = json['capitulos'].toList(),
-        versiculos = json['versiculos'].toList();
+        capitulos = json['capitulos'].cast<int>(),
+        versiculos = json['versiculos'].cast<int>();
 
   Map<String, dynamic> toJson() => {
         'livro': livro.index,

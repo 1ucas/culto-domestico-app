@@ -1,16 +1,17 @@
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
-import 'package:culto_domestico_app/app/local/data/cultinhos_mock_data.dart';
+import 'package:culto_domestico_app/app/local/data/cultinhos_local_data.dart';
 
 class CultinhoService {
-  List<Cultinho> listarCultinhosFeitos() {
-    return CultinhoMockData.listarCultinhosFeitos();
+
+  Future<List<Cultinho>> listarCultinhosFeitos() async {
+    return await CultinhosLocalData.listarCultinhosFeitos();
   }
 
-  void removerCultinho({String id}) {
-    CultinhoMockData.removerCultinho(id: id);
+  Future<void> removerCultinho({String id}) async {
+    CultinhosLocalData.removerCultinho(id: id);
   }
 
-  void salvarCultinho({Cultinho cultinho}) {
-    CultinhoMockData.salvarNovoCultinho(cultinho: cultinho);
+  Future<void> salvarCultinho({Cultinho cultinho}) async {
+    CultinhosLocalData.salvarNovoCultinho(cultinho: cultinho);
   }
 }

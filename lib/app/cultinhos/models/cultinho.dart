@@ -36,9 +36,9 @@ class Cultinho {
         'id': _identifier,
         'data': data.toIso8601String(),
         'pedidosOracao':
-            pedidosOracao.map((pedido) => pedido.toJson()).toList(),
+            pedidosOracao == null ? [] : pedidosOracao.map((pedido) => pedido.toJson()).toList(),
         'leituraFeita':
-            leituraFeita.map((leitura) => leitura.toJson()).toList(),
-        'quemOrou': quemOrou,
+            leituraFeita  == null ? [] : leituraFeita.map((leitura) => leitura.toJson()).toList(),
+        'quemOrou': quemOrou ?? "",
       };
 }
