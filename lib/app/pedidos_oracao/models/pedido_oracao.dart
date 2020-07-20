@@ -3,10 +3,9 @@ import 'dart:ui';
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:meta/meta.dart';
 
-enum Severidade { agradecimento, normal, importante, urgente } 
+enum Severidade { agradecimento, normal, importante, urgente }
 
 extension SeveridadeColor on Severidade {
-
   Color getColor() {
     switch (this) {
       case Severidade.urgente:
@@ -25,19 +24,21 @@ extension SeveridadeColor on Severidade {
         return AppStyle.InactiveColor;
     }
   }
-
 }
 
 enum Categoria { saude, profissional, pessoal, casa, relacionamento, outro }
 
 class PedidoOracao {
-
   final String texto;
   final Severidade severidade;
   final Categoria categoria;
   bool respondida;
 
-  PedidoOracao({@required this.texto, @required this.severidade, @required this.categoria, this.respondida = false});
+  PedidoOracao(
+      {@required this.texto,
+      @required this.severidade,
+      @required this.categoria,
+      this.respondida = false});
 
   @override
   int get hashCode => hashValues(texto, severidade, categoria);
@@ -54,4 +55,17 @@ class PedidoOracao {
         severidade == other.severidade &&
         categoria == other.categoria;
   }
+
+  PedidoOracao.fromJson(Map<String, dynamic> json)
+      : texto = json['texto'] as String,
+        severidade = Severidade.values[json['severidade'] as int],
+        categoria = Categoria.values[json['categoria'] as int],
+        respondida = json['respondida'] as bool;
+
+  Map<String, dynamic> toJson() => {
+        'texto': texto,
+        'severidade': severidade.index,
+        'categoria': categoria.index,
+        'respondida': respondida,
+      };
 }

@@ -1,16 +1,16 @@
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
-import 'package:culto_domestico_app/app/local/data/cultinhos_local_data.dart';
+import 'package:culto_domestico_app/app/local/data/cultinhos_mock_data.dart';
 
 class CultinhoService {
   List<Cultinho> listarCultinhosFeitos() {
-    return CultinhoLocalData.listarCultinhosFeitos();
+    return CultinhoMockData.listarCultinhosFeitos();
   }
 
   void removerCultinho({String id}) {
-    return CultinhoLocalData.removerCultinho(id: id);
+    CultinhoMockData.removerCultinho(id: id);
   }
 
   void salvarCultinho({Cultinho cultinho}) {
-    return CultinhoLocalData.salvarNovoCultinho(cultinho: cultinho);
+    CultinhoMockData.salvarNovoCultinho(cultinho: cultinho);
   }
 }
