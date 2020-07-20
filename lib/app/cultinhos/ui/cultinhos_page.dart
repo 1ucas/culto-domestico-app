@@ -31,7 +31,7 @@ class _CultinhosPageState extends State<CultinhosPage> {
         onDelete: (id) {
           cultinhos.removeWhere((element) => element.id == id);
           CultinhoService().removerCultinho(id: id);
-        },
+        }
       ),
       items: cultinhos,
       separated: false,

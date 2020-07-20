@@ -114,7 +114,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
       setState(() {
         _passagensLidas = value;
         _passagemLidaController.text =
-            value != null ? "Passagem: ${value.toString()}" : null;
+            value != null ? "${value.first.toString()}" : null;
       });
     });
   }

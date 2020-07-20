@@ -11,7 +11,7 @@ class TabItemData {
 
   static const Map<AppTabItem, TabItemData> allTabs = {
     AppTabItem.cultinhos: TabItemData(title: 'Cultinhos', icon: Icons.dehaze),
-    AppTabItem.oracoes: TabItemData(title: 'Orações', icon: Icons.chat),
+    AppTabItem.oracoes: TabItemData(title: 'Orações', icon: Icons.email),
     AppTabItem.acompanhamento: TabItemData(title: 'Resumo', icon: Icons.show_chart),
   };
 

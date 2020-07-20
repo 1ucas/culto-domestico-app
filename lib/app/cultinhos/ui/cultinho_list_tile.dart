@@ -1,14 +1,15 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
+import 'package:culto_domestico_app/app/utils/dialogs/pedido_oracao_list_dialog_item.dart';
 import 'package:culto_domestico_app/app/utils/dialogs/platform_alert_dialog.dart';
+import 'package:culto_domestico_app/app/utils/dialogs/platform_list_dialog.dart';
 import 'package:culto_domestico_app/app/utils/icons/pedido_oracao_icons.dart';
 import 'package:flutter/material.dart';
 
 class CultinhoListTile extends StatelessWidget {
   final Cultinho cultinho;
   final void Function(String id) onDelete;
-
   const CultinhoListTile(
       {Key key, @required this.cultinho, @required this.onDelete})
       : super(key: key);
@@ -53,8 +54,8 @@ class CultinhoListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-                "Passagem Lida: ${cultinho.leituraFeita == null ? "" : cultinho.leituraFeita.first}",
-              ),
+        "Passagem Lida: ${cultinho.leituraFeita == null ? "" : cultinho.leituraFeita.first}",
+      ),
     );
   }
 
@@ -132,7 +133,24 @@ class CultinhoListTile extends StatelessWidget {
     );
   }
 
-  void _navegarParaDetalhesCultinho(BuildContext context) {}
+  _verDetalhesPedidos(BuildContext context, List<PedidoOracao> pedidosOracao) {
+    final itens = cultinho.pedidosOracao
+        .map((e) => PedidoOracaoListDialogItem(pedidoOracao: e))
+        .toList();
+    if (itens != null && itens.length > 0) {
+      showDialog<List<bool>>(
+        context: context,
+        builder: (_) {
+          return PlatformListDialog(
+            content: itens,
+            defaultActionText: "Ok",
+            title: "Pedidos de Oração",
+            readonly: true,
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +160,7 @@ class CultinhoListTile extends StatelessWidget {
       elevation: 12.0,
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
-        onTap: () => _navegarParaDetalhesCultinho(context),
+        onTap: () => _verDetalhesPedidos(context, cultinho.pedidosOracao),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
           child: _buildContent(context),

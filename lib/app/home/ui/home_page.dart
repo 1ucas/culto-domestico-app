@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   final Map<AppTabItem, GlobalKey<NavigatorState>> navigatorKeys = {
     AppTabItem.cultinhos: GlobalKey<NavigatorState>(),
     AppTabItem.oracoes: GlobalKey<NavigatorState>(),
-    AppTabItem.acompanhamento: GlobalKey<NavigatorState>(),
+    //AppTabItem.acompanhamento: GlobalKey<NavigatorState>(),
   };
 
   Map<AppTabItem, WidgetBuilder> get widgetBuilders {
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       AppTabItem.oracoes: (_) => PedidosOracaoPage(
             itens: PedidosOracaoService().listarPedidosOracao(),
           ),
-      AppTabItem.acompanhamento: (_) => DashboardPage(),
+      //AppTabItem.acompanhamento: (_) => DashboardPage(),
     };
   }
 

@@ -7,7 +7,7 @@ extension DetalhesLivros on Livro {
   String get nome => const {
     Livro.genesis: "Gênesis",
     Livro.exodo: "Êxodo",
-    Livro.levitico: "levítico",
+    Livro.levitico: "Levítico",
     Livro.numeros: "Números",
     Livro.deuteronomio: "Deuteronômio",
     Livro.josue: "Josué",
@@ -83,7 +83,7 @@ class PassagemBiblica {
     if(this == null) {
       return "";
     }
-    final livro = this.livro.nome.substring(0, 2);
+    final livro = this.livro.nome;
     var capitulos = "${this.capitulos[0].toString()}";
     if(this.capitulos.length == 2) {
       capitulos += " - ${this.capitulos[1].toString()}";

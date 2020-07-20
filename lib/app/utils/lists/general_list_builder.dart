@@ -30,8 +30,14 @@ class GeneralListBuilder<T> extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index == 0 || index == items.length + 1) {
             return Container();
+          } else if (index == items.length) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: itemBuilder(context, items[index - 1]),
+            );
+          } else {
+            return itemBuilder(context, items[index - 1]);
           }
-          return itemBuilder(context, items[index - 1]);
         },
         itemCount: items.length + 2,
         separatorBuilder: (BuildContext context, int index) => Divider(
@@ -44,8 +50,14 @@ class GeneralListBuilder<T> extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index == 0 || index == items.length + 1) {
             return Container();
+          } else if (index == items.length) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: itemBuilder(context, items[index - 1]),
+            );
+          } else {
+            return itemBuilder(context, items[index - 1]);
           }
-          return itemBuilder(context, items[index - 1]);
         },
         itemCount: items.length + 2,
       );

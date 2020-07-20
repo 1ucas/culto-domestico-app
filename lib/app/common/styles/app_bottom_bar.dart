@@ -34,7 +34,7 @@ class AppBottomBar extends StatelessWidget {
         items: [
           _buildItem(AppTabItem.cultinhos),
           _buildItem(AppTabItem.oracoes),
-          _buildItem(AppTabItem.acompanhamento),
+          //_buildItem(AppTabItem.acompanhamento),
         ],
         onTap: (index) => onSelectTab(AppTabItem.values[index]),
       ),
@@ -42,7 +42,7 @@ class AppBottomBar extends StatelessWidget {
   }
 
   BottomNavigationBarItem _buildItem(AppTabItem tabItem) {
-    final color = currentTab == tabItem ? Colors.white : Colors.black87;
+    final color = currentTab == tabItem ? Colors.white : Colors.black54;
     final itemData = TabItemData.allTabs[tabItem];
     return BottomNavigationBarItem(
       icon: Icon(
