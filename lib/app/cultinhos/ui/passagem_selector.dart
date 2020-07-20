@@ -54,7 +54,6 @@ class _PassagemSelectorState extends State<PassagemSelector> {
             versiculos: versiculos.toList())
       ];
     } else {
-      return null;
     }
   }
 

@@ -54,4 +54,9 @@ class CultinhoLocalData {
   static void removerCultinho({String id}) {
     _listaCultinhos.removeWhere((element) => element.id == id);
   }
+
+  static void salvarNovoCultinho({Cultinho cultinho}) {
+    _listaCultinhos.add(cultinho);
+  }
+
 }

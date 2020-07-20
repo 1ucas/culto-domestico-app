@@ -80,6 +80,9 @@ class PassagemBiblica {
   @override
   String toString() 
   {
+    if(this == null) {
+      return "";
+    }
     final livro = this.livro.nome.substring(0, 2);
     var capitulos = "${this.capitulos[0].toString()}";
     if(this.capitulos.length == 2) {

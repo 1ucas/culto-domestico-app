@@ -7,25 +7,25 @@ import 'package:flutter/material.dart';
 
 class CultinhoListTile extends StatelessWidget {
   final Cultinho cultinho;
-  final void Function(String id)onDelete;
+  final void Function(String id) onDelete;
 
-  const CultinhoListTile({Key key, @required this.cultinho, @required this.onDelete}) : super(key: key);
+  const CultinhoListTile(
+      {Key key, @required this.cultinho, @required this.onDelete})
+      : super(key: key);
 
   Widget _buildQuemOrou() {
     final quemOrou = cultinho.quemOrou;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Quem orou: "),
-        if (quemOrou == null) ...<Widget>[
-          Text("Ninguém orou"),
-        ] else ...[
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(quemOrou),
-          ),
-        ]
-      ],
+    return Container(
+      width: 170,
+      child: Wrap(
+        children: [
+          if (quemOrou == null) ...<Widget>[
+            Text("Ninguém orou"),
+          ] else ...[
+            Text("Quem orou: $quemOrou"),
+          ]
+        ],
+      ),
     );
   }
 
@@ -37,12 +37,24 @@ class CultinhoListTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildQuemOrou(),
-          Text(
-            "Data: ${cultinho.dia}",
-            style: TextStyle(fontSize: 12),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(
+              "Data: ${cultinho.dia}",
+              style: TextStyle(fontSize: 12),
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPassagemLida() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+                "Passagem Lida: ${cultinho.leituraFeita == null ? "" : cultinho.leituraFeita.first}",
+              ),
     );
   }
 
@@ -54,12 +66,13 @@ class CultinhoListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildTitle(),
+              _buildPassagemLida(),
               _buildPedidos(),
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 16.0),
+          padding: const EdgeInsets.only(left: 0.0, right: 8.0),
           child: IconButton(
               icon: Icon(Icons.delete_forever, color: AppStyle.DangerColor),
               onPressed: () {

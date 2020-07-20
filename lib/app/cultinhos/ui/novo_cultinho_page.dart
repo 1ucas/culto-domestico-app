@@ -1,4 +1,6 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
+import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
+import 'package:culto_domestico_app/app/cultinhos/services/cultinho_service.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/passagem_biblica_dialog.dart';
 import 'package:culto_domestico_app/app/home/ui/models/passagem_biblica.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
@@ -17,10 +19,10 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   TextEditingController _pedidosController = TextEditingController();
   TextEditingController _passagemLidaController = TextEditingController();
   TextEditingController _quemOrouController = TextEditingController();
-  String livro;
-  int capituloLido;
-  List<int> versiculosLidos;
+  DateTime _dataSelecionada;
   List<PedidoOracao> _pedidosOracao;
+  List<PassagemBiblica> _passagensLidas;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -35,7 +37,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     return ListView(
       children: [
         Form(
-          key: Key("123"),
+          key: _formKey,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -59,6 +61,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
         firstDate: DateTime.tryParse('2019-06-10T00:00:00'),
         lastDate: DateTime.now());
     setState(() {
+      _dataSelecionada = date;
       if (date != null) {
         _dateController.text =
             "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
@@ -109,9 +112,24 @@ class _NovoCultinhoState extends State<NovoCultinho> {
       },
     ).then((value) {
       setState(() {
-        _passagemLidaController.text = "Passagem: ${value.toString()}";
+        _passagensLidas = value;
+        _passagemLidaController.text =
+            value != null ? "Passagem: ${value.toString()}" : null;
       });
     });
+  }
+
+  _salvarCultinho() {
+    if(_formKey.currentState.validate()) {
+      final novoCultinho = Cultinho(
+        data: _dataSelecionada,
+        quemOrou: _quemOrouController.text,
+        leituraFeita: _passagensLidas,
+        pedidosOracao: _pedidosOracao
+      );
+      CultinhoService().salvarCultinho(cultinho: novoCultinho);
+      Navigator.pop(context);
+    }
   }
 
   Widget _buildData() {
@@ -143,22 +161,22 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     return GestureDetector(
       onTap: () async => await _selectPassagem(),
       child: AbsorbPointer(
-              child: Padding(
+        child: Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: TextFormField(
-              enabled: false,
-              controller: _passagemLidaController,
-              decoration: InputDecoration(
-                labelText: "Passagem Bíblica",
-                disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black38)),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(color: Colors.black38),
-                ),
+            enabled: false,
+            controller: _passagemLidaController,
+            decoration: InputDecoration(
+              labelText: "Passagem Bíblica",
+              disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black38)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(color: Colors.black38),
               ),
-              autofocus: false,
             ),
+            autofocus: false,
+          ),
         ),
       ),
     );
@@ -237,6 +255,19 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppStyle.PrimaryColor,
+        actions: [
+          FlatButton(
+            child: Text(
+              "Salvar",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {
+              _salvarCultinho();
+            },
+          )
+        ],
         title: Text("Novo Cultinho"),
       ),
       body: _buildContents(),

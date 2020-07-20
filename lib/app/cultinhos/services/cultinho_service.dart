@@ -9,4 +9,8 @@ class CultinhoService {
   void removerCultinho({String id}) {
     return CultinhoLocalData.removerCultinho(id: id);
   }
+
+  void salvarCultinho({Cultinho cultinho}) {
+    return CultinhoLocalData.salvarNovoCultinho(cultinho: cultinho);
+  }
 }
