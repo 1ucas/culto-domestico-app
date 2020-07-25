@@ -207,27 +207,6 @@ extension DetalhesLivros on Livro {
         Livro.judas: 1,
         Livro.apocalipse: 22,
       }[this];
-
-  List<int> get numVersiculos => const {
-        Livro.genesis: [1],
-        Livro.exodo: [2, 2],
-        Livro.levitico: [2, 2],
-        Livro.numeros: [2, 2],
-        Livro.deuteronomio: [2, 2],
-        Livro.josue: [2, 2],
-        Livro.juizes: [2, 2],
-        Livro.rute: [2, 2],
-        Livro.samuel: [2, 2],
-        Livro.samuel2: [2, 2],
-        Livro.reis: [2, 2],
-        Livro.reis2: [2, 2],
-        Livro.cronicas: [2, 2],
-        Livro.cronicas2: [2, 2],
-        Livro.esdras: [2, 2],
-        Livro.nemias: [2, 2],
-        Livro.ester: [2, 2],
-        Livro.jo: [2, 2],
-      }[this];
 }
 
 class PassagemBiblica {
