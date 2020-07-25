@@ -35,18 +35,20 @@ class _CultinhosPageState extends State<CultinhosPage> {
       future: cultinhos,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: GeneralListBuilder<Cultinho>(
-              itemBuilder: (context, cultinho) => CultinhoListTile(
-                  cultinho: cultinho,
-                  onDelete: (id) {
-                    CultinhoService().removerCultinho(id: id).then((_) {
-                      cultinhos = CultinhoService().listarCultinhosFeitos();
-                    });
-                  }),
-              items: snapshot.data,
-              separated: false,
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: GeneralListBuilder<Cultinho>(
+                itemBuilder: (context, cultinho) => CultinhoListTile(
+                    cultinho: cultinho,
+                    onDelete: (id) {
+                      CultinhoService().removerCultinho(id: id).then((_) {
+                        cultinhos = CultinhoService().listarCultinhosFeitos();
+                      });
+                    }),
+                items: snapshot.data,
+                separated: false,
+              ),
             ),
           );
         } else {
