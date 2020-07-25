@@ -1,4 +1,4 @@
-# culto_domestico_app
+# cultodomestico
 
 A new Flutter project.
 
