@@ -14,36 +14,26 @@ class CultinhoListTile extends StatelessWidget {
       {Key key, @required this.cultinho, @required this.onDelete})
       : super(key: key);
 
-  Widget _buildQuemOrou() {
-    final quemOrou = cultinho.quemOrou;
-    return Container(
-      width: 170,
-      child: Wrap(
-        children: [
-          if (quemOrou == null) ...<Widget>[
-            Text("Ninguém orou"),
-          ] else ...[
-            Text("Quem orou: $quemOrou"),
-          ]
-        ],
-      ),
-    );
-  }
+  get quemOrou => cultinho.quemOrou == null
+      ? "Ninguém orou"
+      : "Quem orou: ${cultinho.quemOrou}";
 
   Widget _buildTitle() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildQuemOrou(),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              "Data: ${cultinho.dia}",
-              style: TextStyle(fontSize: 12),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Text(quemOrou),
             ),
+            flex: 1,
+          ),
+          Text(
+            "Data: ${cultinho.dia}",
+            style: TextStyle(fontSize: 12),
           ),
         ],
       ),
@@ -73,7 +63,7 @@ class CultinhoListTile extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 0.0, right: 8.0),
+          padding: const EdgeInsets.only(right: 8.0),
           child: IconButton(
               icon: Icon(Icons.delete_forever, color: AppStyle.DangerColor),
               onPressed: () {
@@ -161,10 +151,7 @@ class CultinhoListTile extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () => _verDetalhesPedidos(context, cultinho.pedidosOracao),
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: _buildContent(context),
-        ),
+        child: _buildContent(context),
       ),
     );
   }

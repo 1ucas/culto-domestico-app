@@ -10,7 +10,7 @@ class PassagemBiblicaDialog extends PlatformDialog {
 
   @override
   Widget buildContent() {
-    return _passagemSelector;
+    return SingleChildScrollView(child: _passagemSelector);
   }
 
   @override

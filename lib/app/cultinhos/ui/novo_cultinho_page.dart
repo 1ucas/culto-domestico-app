@@ -34,23 +34,19 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   }
 
   Widget _buildForm() {
-    return ListView(
-      children: [
-        Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                _buildData(),
-                _buildPassagemLida(),
-                _buildPedidosOracao(),
-                _buildQuemOrou(),
-              ],
-            ),
-          ),
-        )
-      ],
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            _buildData(),
+            _buildPassagemLida(),
+            _buildPedidosOracao(),
+            _buildQuemOrou(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -120,14 +116,15 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   }
 
   _salvarCultinho() {
-    if(_formKey.currentState.validate()) {
+    if (_formKey.currentState.validate()) {
       final novoCultinho = Cultinho(
-        data: _dataSelecionada,
-        quemOrou: _quemOrouController.text,
-        leituraFeita: _passagensLidas,
-        pedidosOracao: _pedidosOracao
-      );
-      CultinhoService().salvarCultinho(cultinho: novoCultinho).then((_) => Navigator.pop(context));
+          data: _dataSelecionada,
+          quemOrou: _quemOrouController.text,
+          leituraFeita: _passagensLidas,
+          pedidosOracao: _pedidosOracao);
+      CultinhoService()
+          .salvarCultinho(cultinho: novoCultinho)
+          .then((_) => Navigator.pop(context));
     }
   }
 
@@ -229,21 +226,11 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   }
 
   Widget _buildContents() {
-    return Container(
-      color: Colors.black12,
+    return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Image.asset('assets/familiaorando.png'),
-          Expanded(
-            flex: 1,
-            child: Card(
-              shadowColor: Colors.black38,
-              elevation: 8.0,
-              child: _buildForm(),
-            ),
-          ),
+          _buildForm(),
         ],
       ),
     );

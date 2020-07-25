@@ -50,14 +50,14 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
       title: "Atenção",
     ).show(context);
     if (respondida) {
-      setState(() {
-        PedidosOracaoService().atualizarOracaoRespondida(oracaoId).then((_) {
+      PedidosOracaoService().atualizarOracaoRespondida(oracaoId).then((_) {
+        setState(() {
           listaOracoes = PedidosOracaoService().listarPedidosOracao();
         });
       });
     } else {
-      setState(() {
-        PedidosOracaoService().removerOracao(oracaoId).then((_) {
+      PedidosOracaoService().removerOracao(oracaoId).then((_) {
+        setState(() {
           listaOracoes = PedidosOracaoService().listarPedidosOracao();
         });
       });
