@@ -3,19 +3,19 @@ import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart
 
 class PedidosOracaoService {
   
-  List<PedidoOracao> listarPedidosOracao() {
+  Future<List<PedidoOracao>> listarPedidosOracao() async {
     return PedidosOracaoLocalData.listarTodosPedidosOracao();
   }
 
-  void inserirPedidoOracao(PedidoOracao oracao) {
+  Future<void> inserirPedidoOracao(PedidoOracao oracao) async {
     PedidosOracaoLocalData.inserirPedidoOracao(oracao);
   }
 
-  void removerOracao(int oracaoId){
+  Future<void> removerOracao(int oracaoId) async {
     PedidosOracaoLocalData.removerOracao(oracaoId);
   }
 
-  void atualizarOracaoRespondida(int oracaoId){
+  Future<void> atualizarOracaoRespondida(int oracaoId) async {
     PedidosOracaoLocalData.atualizarOracaoRespondida(oracaoId);
   }
 }

@@ -9,16 +9,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PedidosOracaoPage extends StatefulWidget {
-  final List<PedidoOracao> itens;
-
-  const PedidosOracaoPage({Key key, @required this.itens}) : super(key: key);
-
   @override
   _PedidosOracaoPageState createState() => _PedidosOracaoPageState();
 }
 
 class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
-  List<PedidoOracao> listaOracoes;
+  Future<List<PedidoOracao>> listaOracoes;
+
+  @override
+  void initState() {
+    listaOracoes = PedidosOracaoService().listarPedidosOracao();
+    super.initState();
+  }
 
   final _filtrosLista = const <bool, Widget>{
     false: Padding(
@@ -37,10 +39,6 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
 
   bool _filtrarRespondidas = false;
 
-  get listaRenderizar => listaOracoes
-      .where((oracao) => oracao.respondida == _filtrarRespondidas)
-      .toList();
-
   Future<void> _removerPedidoOracao(int oracaoId) async {
     final respondida = await PlatformAlertDialog(
       content: _filtrarRespondidas
@@ -53,12 +51,15 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
     ).show(context);
     if (respondida) {
       setState(() {
-        PedidosOracaoService().atualizarOracaoRespondida(oracaoId);
+        PedidosOracaoService().atualizarOracaoRespondida(oracaoId).then((_) {
+          listaOracoes = PedidosOracaoService().listarPedidosOracao();
+        });
       });
     } else {
       setState(() {
-        listaOracoes.removeWhere((element) => element.hashCode == oracaoId);
-        PedidosOracaoService().removerOracao(oracaoId);
+        PedidosOracaoService().removerOracao(oracaoId).then((_) {
+          listaOracoes = PedidosOracaoService().listarPedidosOracao();
+        });
       });
     }
   }
@@ -89,15 +90,33 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
   }
 
   Widget _buildList() {
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        return _buildItem(context, listaRenderizar[index]);
+    return FutureBuilder(
+      future: listaOracoes,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.length == 0) {
+            return Center(child: EmptyListContent());
+          } else {
+            var listaRenderizar = snapshot.data
+                .where((oracao) => oracao.respondida == _filtrarRespondidas)
+                .toList();
+            return ListView.separated(
+              itemBuilder: (context, index) {
+                return _buildItem(context, listaRenderizar[index]);
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                height: 0.5,
+                thickness: 1,
+              ),
+              itemCount: listaRenderizar.length,
+            );
+          }
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       },
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        height: 0.5,
-        thickness: 1,
-      ),
-      itemCount: listaRenderizar.length,
     );
   }
 
@@ -117,11 +136,7 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
             });
           },
         ),
-        if (listaRenderizar.isNotEmpty) ...[
-          Expanded(child: _buildList())
-        ] else ...[
-          Expanded(child: Center(child: EmptyListContent()))
-        ]
+        Expanded(child: _buildList())
       ],
     );
   }
@@ -130,13 +145,14 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
     Navigator.push(
             context, MaterialPageRoute(builder: (context) => NovaOracaoPage()))
         .then((value) {
-      setState(() {});
+      setState(() async {
+        listaOracoes = PedidosOracaoService().listarPedidosOracao();
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    listaOracoes = widget.itens;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppStyle.PrimaryColor,

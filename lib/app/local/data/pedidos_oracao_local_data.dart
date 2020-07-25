@@ -1,59 +1,51 @@
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PedidosOracaoLocalData {
+  static Future<List<PedidoOracao>> listarTodosPedidosOracao() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  static final _pedidoOracao1 = PedidoOracao(
-    categoria: Categoria.pessoal,
-    severidade: Severidade.normal,
-    texto:
-        "O Lucas precisa de pilhas para o mouse. Texto grande para testar quebra de linha. Segunda quebra de linha.",
-  );
-  static final _pedidoOracao2 = PedidoOracao(
-    categoria: Categoria.saude,
-    severidade: Severidade.normal,
-    texto:
-        "Segunda oração para testes rapidos.",
-  );
+    var data = prefs.get("oracoes");
 
-  static final _pedidoOracao3 = PedidoOracao(
-    categoria: Categoria.casa,
-    severidade: Severidade.importante,
-    texto:
-        "Pedido sobre a casa nova.",
-  );
-
-  static final _pedidoOracao4 = PedidoOracao(
-    categoria: Categoria.profissional,
-    severidade: Severidade.urgente,
-    texto:
-        "Começando um emprego novo na empresa ABC.",
-  );
-
-  static final _pedidoOracao5 = PedidoOracao(
-    categoria: Categoria.relacionamento,
-    severidade: Severidade.importante,
-    texto:
-        "O cartão do supermercado acaba muito rapido com compras de pizza.",
-  );
-
-  static var _listaPedidos = List.of([_pedidoOracao1, _pedidoOracao2, _pedidoOracao3, _pedidoOracao4, _pedidoOracao5]);
-
-  static List<PedidoOracao> listarTodosPedidosOracao() {
-    return _listaPedidos;
+    if (data != null) {
+      var parsed = json.decode(data).cast<Map<String, dynamic>>();
+      if (parsed != null) {
+        var pedidos = parsed
+            .map<PedidoOracao>((json) => PedidoOracao.fromJson(json))
+            .toList();
+        return pedidos;
+      }
+    }
+    return [];
   }
 
-  static void inserirPedidoOracao(PedidoOracao oracao) {
-    _listaPedidos.add(oracao);
-  }
-
-  static void removerOracao(int oracaoId) {
-    _listaPedidos.removeWhere((element) => element.hashCode == oracaoId);
-  }
-
-  static void atualizarOracaoRespondida(int oracaoId) {
-    _listaPedidos.forEach((element) {
-      if(element.hashCode == oracaoId)
-        element.respondida = true;
+  static Future<void> inserirPedidoOracao(PedidoOracao oracao) async {
+    await atualizarDadosOracao(atualizacao: (pedidos) {
+      pedidos.add(oracao);
     });
+  }
+
+  static Future<void> removerOracao(int oracaoId) async {
+    await atualizarDadosOracao(atualizacao: (pedidos) {
+      pedidos.removeWhere((element) => element.hashCode == oracaoId);
+    });
+  }
+
+  static Future<void> atualizarOracaoRespondida(int oracaoId) async {
+    await atualizarDadosOracao(atualizacao: (pedidos) {
+      pedidos.forEach((element) {
+        if (element.hashCode == oracaoId) element.respondida = true;
+      });
+    });
+  }
+
+  static Future<void> atualizarDadosOracao(
+      {Function(List<PedidoOracao>) atualizacao}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var pedidos = await listarTodosPedidosOracao();
+    atualizacao(pedidos);
+    var encoded = json.encode(pedidos);
+    prefs.setString("oracoes", encoded);
   }
 }

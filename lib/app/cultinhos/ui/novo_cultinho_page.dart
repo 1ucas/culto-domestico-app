@@ -70,7 +70,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   }
 
   Future<void> _selectPedidos() async {
-    _pedidosOracao = PedidosOracaoService().listarPedidosOracao();
+    _pedidosOracao = await PedidosOracaoService().listarPedidosOracao();
 
     var pedidos = _pedidosOracao
         .where((e) => e.respondida == false)

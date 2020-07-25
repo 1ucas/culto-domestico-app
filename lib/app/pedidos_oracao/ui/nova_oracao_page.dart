@@ -188,14 +188,13 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
     );
   }
 
-  void _salvarOracao() {
+  Future<void> _salvarOracao() async {
     if (_textoFormKey.currentState.validate()) {
       final oracao = PedidoOracao(
           categoria: _categoria,
           severidade: _severidadeOracao,
           texto: _textoOracaoController.text);
-      PedidosOracaoService().inserirPedidoOracao(oracao);
-      Navigator.pop(context);
+      await PedidosOracaoService().inserirPedidoOracao(oracao).then((value) => Navigator.pop(context));  
     }
   }
 

@@ -18,7 +18,21 @@ enum Livro {
   esdras,
   nemias,
   ester,
-  jo
+  jo,
+  salmos,
+  proverbios,
+  eclesiastes,
+  cantares,
+  isaias,
+  jeremias,
+  lamentacoes,
+  ezequiel,
+  daniel,
+  oseias,
+  joel,
+  amos,
+  abadias,
+  
 }
 
 extension DetalhesLivros on Livro {
@@ -44,24 +58,24 @@ extension DetalhesLivros on Livro {
       }[this];
 
   int get numCapitulos => const {
-        Livro.genesis: 1,
-        Livro.exodo: 2,
-        Livro.levitico: 3,
-        Livro.numeros: 4,
-        Livro.deuteronomio: 5,
-        Livro.josue: 6,
-        Livro.juizes: 7,
-        Livro.rute: 8,
-        Livro.samuel: 9,
-        Livro.samuel2: 10,
-        Livro.reis: 11,
-        Livro.reis2: 12,
-        Livro.cronicas: 13,
-        Livro.cronicas2: 14,
-        Livro.esdras: 15,
-        Livro.nemias: 16,
-        Livro.ester: 17,
-        Livro.jo: 18,
+        Livro.genesis: 50,
+        Livro.exodo: 40,
+        Livro.levitico: 27,
+        Livro.numeros: 36,
+        Livro.deuteronomio: 34,
+        Livro.josue: 24,
+        Livro.juizes: 21,
+        Livro.rute: 4,
+        Livro.samuel: 31,
+        Livro.samuel2: 24,
+        Livro.reis: 22,
+        Livro.reis2: 25,
+        Livro.cronicas: 29,
+        Livro.cronicas2: 36,
+        Livro.esdras: 10,
+        Livro.nemias: 13,
+        Livro.ester: 10,
+        Livro.jo: 42,
       }[this];
 
   List<int> get numVersiculos => const {

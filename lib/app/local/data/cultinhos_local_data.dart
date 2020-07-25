@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
 
 class CultinhosLocalData {
+
   static Future<List<Cultinho>> listarCultinhosFeitos() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -19,17 +20,21 @@ class CultinhosLocalData {
   }
 
   static Future<void> removerCultinho({String id}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var cultinhos = await listarCultinhosFeitos();
-    cultinhos.removeWhere((element) => element.id == id);
-    var encoded = json.encode(cultinhos);
-    prefs.setString("cultinhos", encoded);
+    await atualizarDadosCultinhos(atualizacao: (cultinhos) {
+      cultinhos.removeWhere((element) => element.id == id);
+    });
   }
 
   static Future<void> salvarNovoCultinho({Cultinho cultinho}) async {
+    await atualizarDadosCultinhos(atualizacao: (cultinhos) {
+      cultinhos.add(cultinho);
+    });
+  }
+
+  static Future<void> atualizarDadosCultinhos({Function(List<Cultinho>) atualizacao}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var cultinhos = await listarCultinhosFeitos();
-    cultinhos.add(cultinho);
+    atualizacao(cultinhos);
     var encoded = json.encode(cultinhos);
     prefs.setString("cultinhos", encoded);
   }

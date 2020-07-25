@@ -22,9 +22,7 @@ class _HomePageState extends State<HomePage> {
   Map<AppTabItem, WidgetBuilder> get widgetBuilders {
     return {
       AppTabItem.cultinhos: (_) => CultinhosPage(),
-      AppTabItem.oracoes: (_) => PedidosOracaoPage(
-            itens: PedidosOracaoService().listarPedidosOracao(),
-          ),
+      AppTabItem.oracoes: (_) => PedidosOracaoPage(),
       //AppTabItem.acompanhamento: (_) => DashboardPage(),
     };
   }
