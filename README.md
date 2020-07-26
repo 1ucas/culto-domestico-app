@@ -6,8 +6,6 @@
 
 ## Funcionalidades:
 
-![alt text](promo/screenshot1.jpg?raw=true "ss1")![alt text](promo/screenshot2.jpg?raw=true "ss2")![alt text](promo/screenshot3.jpg?raw=true "ss3")
-
 - [x] Novo cultinho
 - [x] Deletar cultinho
 - [x] Marcar quem fez a oração do dia
