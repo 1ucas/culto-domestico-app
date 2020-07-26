@@ -17,6 +17,10 @@
 ## Tecnologia:
 Flutter
 
+## Links para Download:
+- [X] Android
+- [ ] iOS (em construção)
+
 ## Política de Privacidade:
 
 Este App não faz uso de nenhum dado sensível nem compartilha nenhuma informação sua. Suas informações nunca saem de seu dispositivo.
