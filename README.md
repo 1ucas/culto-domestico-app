@@ -2,7 +2,7 @@
 
 ## Um aplicativo para gerenciar e guardar o histórico de seus cultos domésticos.
 
-![alt text](promo/featured.png?raw=true "promo")
+![alt text](promo/banner.png?raw=true "promo")
 
 ## Funcionalidades:
 
