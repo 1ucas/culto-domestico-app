@@ -18,7 +18,7 @@
 Flutter
 
 ## Links para Download:
-- [X] Android - https://play.google.com/store/apps/details?id=br.com.manobray.culto_domestico_app
+- [X] [Android](https://play.google.com/store/apps/details?id=br.com.manobray.culto_domestico_app)
 - [ ] iOS (em construção)
 
 ## Política de Privacidade:
