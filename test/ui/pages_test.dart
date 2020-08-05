@@ -29,7 +29,7 @@ void main() {
 
   testeNovaOracaoPage() {
     widget = NovaOracaoPage();
-    testWidgets("Load", (WidgetTester tester) async {
+    testWidgets("Inserir nova oração", (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
 
       // Encontrou o Elemento Pagina
@@ -39,24 +39,24 @@ void main() {
       final categoriaField = find.byKey(Key('categoria-field'));
       expect(categoriaField, findsOneWidget);
       await tester.tap(categoriaField);
-      await tester.pump(new Duration(milliseconds: 200));
+      await tester.pump();
 
       final categoriaListItem = find.byKey(Key('categoria-item-0'));
       expect(categoriaListItem, findsWidgets);
       await tester.tap(categoriaListItem.first);
-      await tester.pump(new Duration(milliseconds: 200));
+      await tester.pump();
 
       final descricaoField = find.byKey(Key('descricao-field'));
       expect(descricaoField, findsOneWidget);
       await tester.tap(descricaoField);
       await tester.enterText(descricaoField, "descricao para sucesso");
-      await tester.pump(new Duration(milliseconds: 200));
+      await tester.pump();
 
       // Ao clicar sai da tela
       final button = find.text("Salvar");
       expect(button, findsOneWidget);
       await tester.tap(button);
-      await tester.pump(new Duration(milliseconds: 400));
+      await tester.pump();
 
       verify(mockObserver.didPop(any, any));
     });
