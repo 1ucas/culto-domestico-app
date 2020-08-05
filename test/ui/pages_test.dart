@@ -3,19 +3,26 @@ import 'package:culto_domestico_app/app/local/data/pedidos_oracao_repository.dar
 import 'package:culto_domestico_app/app/pedidos_oracao/ui/nova_oracao_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 void main() {
   Widget widget;
   Widget testApp;
+  MockNavigatorObserver mockObserver;
 
   setUp(() {
+    mockObserver = MockNavigatorObserver();
+
     testApp = Provider<PedidosOracaoRepository>(
       create: (context) => PedidosOracaoMockData(),
       child: MaterialApp(
         home: Scaffold(
           body: widget,
         ),
+        navigatorObservers: [mockObserver],
       ),
     );
   });
@@ -49,9 +56,9 @@ void main() {
       final button = find.text("Salvar");
       expect(button, findsOneWidget);
       await tester.tap(button);
-      await tester.pump(new Duration(milliseconds: 200));
+      await tester.pump(new Duration(milliseconds: 400));
 
-      expect(find.byType(NovaOracaoPage), findsNothing);
+      verify(mockObserver.didPop(any, any));
     });
   }
 

@@ -11,7 +11,7 @@ class ValidateOracaoUseCase {
   }
 
   String validarCategoria(texto) {
-    if (texto == null || texto.isEmpty) {
+    if (texto == null || texto == "") {
       return "Categoria é um campo obrigatório";
     } else {
       return null;
