@@ -1,8 +1,3 @@
-import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
-import 'package:culto_domestico_app/app/home/ui/models/passagem_biblica.dart';
-import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
-import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
-
 class CultinhoMockData {
 
   // static get _cultinho1 => Cultinho(

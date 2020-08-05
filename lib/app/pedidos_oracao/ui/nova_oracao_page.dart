@@ -46,7 +46,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
               });
             },
             validator: (value) {
-              return ValidateOracaoUseCase().validarCategoria(value);;
+              return ValidateOracaoUseCase().validarCategoria(value);
             },
             items: [
               for (var categoria in Categoria.values) ...[
