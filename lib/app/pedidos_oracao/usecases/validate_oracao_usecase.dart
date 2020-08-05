@@ -1,4 +1,5 @@
 class ValidateOracaoUseCase {
+
   String validarDescricao(texto) {
     if (texto == null || texto.isEmpty) {
       return "Informação é um campo obrigatório";
@@ -16,4 +17,5 @@ class ValidateOracaoUseCase {
       return null;
     }
   }
+  
 }

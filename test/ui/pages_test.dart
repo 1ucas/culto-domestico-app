@@ -25,14 +25,33 @@ void main() {
     testWidgets("Load", (WidgetTester tester) async {
       await tester.pumpWidget(testApp);
 
-      // Encontrou o Elemento
+      // Encontrou o Elemento Pagina
       expect(find.byType(NovaOracaoPage), findsOneWidget);
 
-      // Ao clicar sai da tela
-      final button = find.byType(FlatButton);
-      await tester.tap(button);
+      // Encontra e preenche tela
+      final categoriaField = find.byKey(Key('categoria-field'));
+      expect(categoriaField, findsOneWidget);
+      await tester.tap(categoriaField);
+      await tester.pump(new Duration(milliseconds: 200));
 
-      //expect(find.byType(NovaOracaoPage), findsNothing);
+      final categoriaListItem = find.byKey(Key('categoria-item-0'));
+      expect(categoriaListItem, findsWidgets);
+      await tester.tap(categoriaListItem.first);
+      await tester.pump(new Duration(milliseconds: 200));
+
+      final descricaoField = find.byKey(Key('descricao-field'));
+      expect(descricaoField, findsOneWidget);
+      await tester.tap(descricaoField);
+      await tester.enterText(descricaoField, "descricao para sucesso");
+      await tester.pump(new Duration(milliseconds: 200));
+
+      // Ao clicar sai da tela
+      final button = find.text("Salvar");
+      expect(button, findsOneWidget);
+      await tester.tap(button);
+      await tester.pump(new Duration(milliseconds: 200));
+
+      expect(find.byType(NovaOracaoPage), findsNothing);
     });
   }
 

@@ -38,43 +38,50 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: FormField<Categoria>(
-            key: _novaOracaoFormKey,
-            validator: ValidateOracaoUseCase().validarCategoria,
-              builder: (FormFieldState<Categoria> categoria) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0)),
-                labelStyle: TextStyle(fontSize: 16.0),
-                hintText: "",
-              ),
-              isEmpty: _categoria == null,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<Categoria>(
-                  value: _categoria,
-                  autofocus: true,
-                  isDense: true,
-                  onChanged: (Categoria newValue) {
-                    setState(() {
-                      _categoria = newValue;
-                    });
-                  },
-                  items: [
-                    for (var categoria in Categoria.values) ...[
-                      DropdownMenuItem<Categoria>(
-                        value: categoria,
-                        child: Text(
-                          describeEnum(categoria).toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 14, color: AppStyle.PrimaryColor),
-                        ),
-                      ),
-                    ],
-                  ],
+            key: Key('categoria-field'),
+            validator: (value) {
+              final resposta = ValidateOracaoUseCase().validarCategoria(value);
+              print("VALIDANDO  CATEGORIA");
+              print(resposta);
+              return resposta;
+            },
+            builder: (FormFieldState<Categoria> categoria) {
+              return InputDecorator(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0)),
+                  labelStyle: TextStyle(fontSize: 16.0),
                 ),
-              ),
-            );
-          }),
+                isEmpty: _categoria == null,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<Categoria>(
+                    value: _categoria,
+                    autofocus: true,
+                    isDense: true,
+                    onChanged: (Categoria newValue) {
+                      setState(() {
+                        _categoria = newValue;
+                      });
+                    },
+                    items: [
+                      for (var categoria in Categoria.values) ...[
+                        DropdownMenuItem<Categoria>(
+                          key: Key('categoria-dropdown-${categoria.index}'),
+                          value: categoria,
+                          child: Text(
+                            describeEnum(categoria).toUpperCase(),
+                            key: Key('categoria-item-${categoria.index}'),
+                            style: TextStyle(
+                                fontSize: 14, color: AppStyle.PrimaryColor),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );
@@ -157,28 +164,31 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
         AppStyle.titulo("Informações"),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Form(
-            key: _novaOracaoFormKey,
-            child: TextFormField(
-              maxLines: null,
-              decoration: new InputDecoration(
-                focusColor: AppStyle.PrimaryColor,
-                labelText: "",
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                      color: AppStyle.SecondaryColor, style: BorderStyle.solid),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                      color: AppStyle.SecondaryColor, style: BorderStyle.solid),
-                ),
+          child: TextFormField(
+            key: Key('descricao-field'),
+            maxLines: null,
+            decoration: new InputDecoration(
+              focusColor: AppStyle.PrimaryColor,
+              labelText: "",
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(
+                    color: AppStyle.SecondaryColor, style: BorderStyle.solid),
               ),
-              maxLength: 70,
-              validator: ValidateOracaoUseCase().validarDescricao,
-              controller: _textoOracaoController,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(
+                    color: AppStyle.SecondaryColor, style: BorderStyle.solid),
+              ),
             ),
+            maxLength: 70,
+            validator: (value) {
+              final resposta = ValidateOracaoUseCase().validarDescricao(value);
+              print("VALIDANDO  DESCRICAO");
+              print(resposta);
+              return resposta;
+            },
+            controller: _textoOracaoController,
           ),
         )
       ],
@@ -192,7 +202,9 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
           categoria: _categoria,
           severidade: _severidadeOracao,
           texto: _textoOracaoController.text);
-      await PedidosOracaoService(repositorio: repo).inserirPedidoOracao(oracao).then((value) => Navigator.pop(context));  
+      await PedidosOracaoService(repositorio: repo)
+          .inserirPedidoOracao(oracao)
+          .then((value) => Navigator.pop(context));
     }
   }
 
@@ -200,18 +212,21 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            _buildCategoria(),
-            SizedBox(
-              height: 20,
-            ),
-            _buildTexto(),
-            SizedBox(
-              height: 5,
-            ),
-            _buildSeveridade(),
-          ],
+        child: Form(
+          key: _novaOracaoFormKey,
+          child: Column(
+            children: [
+              _buildCategoria(),
+              SizedBox(
+                height: 20,
+              ),
+              _buildTexto(),
+              SizedBox(
+                height: 5,
+              ),
+              _buildSeveridade(),
+            ],
+          ),
         ),
       ),
     );
