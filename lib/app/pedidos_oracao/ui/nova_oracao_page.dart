@@ -1,8 +1,11 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
+import 'package:culto_domestico_app/app/local/data/pedidos_oracao_repository.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
+import 'package:culto_domestico_app/app/pedidos_oracao/usecases/validate_oracao_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NovaOracaoPage extends StatefulWidget {
   @override
@@ -13,7 +16,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
   Categoria _categoria;
   int _severidade = 0;
   TextEditingController _textoOracaoController = TextEditingController();
-  final _textoFormKey = GlobalKey<FormState>();
+  final _novaOracaoFormKey = GlobalKey<FormState>();
 
   get _severidadeOracao => Severidade.values[_severidade];
 
@@ -35,6 +38,8 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: FormField<Categoria>(
+            key: _novaOracaoFormKey,
+            validator: ValidateOracaoUseCase().validarCategoria,
               builder: (FormFieldState<Categoria> categoria) {
             return InputDecorator(
               decoration: InputDecoration(
@@ -153,7 +158,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Form(
-            key: _textoFormKey,
+            key: _novaOracaoFormKey,
             child: TextFormField(
               maxLines: null,
               decoration: new InputDecoration(
@@ -171,15 +176,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
                 ),
               ),
               maxLength: 70,
-              validator: (texto) {
-                if (texto == null || texto.isEmpty) {
-                  return "Informação é um campo obrigatório";
-                } else if (texto.length < 10) {
-                  return "Descreva melhor seu pedido de oração";
-                } else {
-                  return null;
-                }
-              },
+              validator: ValidateOracaoUseCase().validarDescricao,
               controller: _textoOracaoController,
             ),
           ),
@@ -189,12 +186,13 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
   }
 
   Future<void> _salvarOracao() async {
-    if (_textoFormKey.currentState.validate()) {
+    final repo = Provider.of<PedidosOracaoRepository>(context, listen: false);
+    if (_novaOracaoFormKey.currentState.validate()) {
       final oracao = PedidoOracao(
           categoria: _categoria,
           severidade: _severidadeOracao,
           texto: _textoOracaoController.text);
-      await PedidosOracaoService().inserirPedidoOracao(oracao).then((value) => Navigator.pop(context));  
+      await PedidosOracaoService(repositorio: repo).inserirPedidoOracao(oracao).then((value) => Navigator.pop(context));  
     }
   }
 

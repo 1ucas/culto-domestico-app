@@ -3,11 +3,13 @@ import 'package:culto_domestico_app/app/cultinhos/models/cultinho.dart';
 import 'package:culto_domestico_app/app/cultinhos/services/cultinho_service.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/passagem_biblica_dialog.dart';
 import 'package:culto_domestico_app/app/home/ui/models/passagem_biblica.dart';
+import 'package:culto_domestico_app/app/local/data/pedidos_oracao_repository.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:culto_domestico_app/app/utils/dialogs/pedido_oracao_list_dialog_item.dart';
 import 'package:culto_domestico_app/app/utils/dialogs/platform_list_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NovoCultinho extends StatefulWidget {
   @override
@@ -66,7 +68,8 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   }
 
   Future<void> _selectPedidos() async {
-    _pedidosOracao = await PedidosOracaoService().listarPedidosOracao();
+    final repo = Provider.of<PedidosOracaoRepository>(context, listen: false);
+    _pedidosOracao = await PedidosOracaoService(repositorio: repo).listarPedidosOracao();
 
     var pedidos = _pedidosOracao
         .where((e) => e.respondida == false)

@@ -1,9 +1,11 @@
 import 'package:culto_domestico_app/app/common/styles/app_bottom_bar.dart';
 import 'package:culto_domestico_app/app/common/styles/app_tab_item.dart';
 import 'package:culto_domestico_app/app/cultinhos/ui/cultinhos_page.dart';
-import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
+import 'package:culto_domestico_app/app/local/data/pedidos_oracao_local_data.dart';
+import 'package:culto_domestico_app/app/local/data/pedidos_oracao_repository.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/ui/pedidos_oracao_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -39,11 +41,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBottomBar(
-      navigatorKeys: navigatorKeys,
-      widgetBuilders: widgetBuilders,
-      currentTab: _currentTab,
-      onSelectTab: _select,
+    return Provider<PedidosOracaoRepository>(
+      create: (context) => PedidosOracaoLocalData(),
+      child: AppBottomBar(
+        navigatorKeys: navigatorKeys,
+        widgetBuilders: widgetBuilders,
+        currentTab: _currentTab,
+        onSelectTab: _select,
+      ),
     );
   }
 }

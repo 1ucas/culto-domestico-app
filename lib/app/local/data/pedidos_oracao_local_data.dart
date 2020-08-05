@@ -1,9 +1,11 @@
+import 'package:culto_domestico_app/app/local/data/pedidos_oracao_repository.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PedidosOracaoLocalData {
-  static Future<List<PedidoOracao>> listarTodosPedidosOracao() async {
+class PedidosOracaoLocalData extends PedidosOracaoRepository {
+  
+  Future<List<PedidoOracao>> listarTodosPedidosOracao() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var data = prefs.get("oracoes");
@@ -20,19 +22,19 @@ class PedidosOracaoLocalData {
     return [];
   }
 
-  static Future<void> inserirPedidoOracao(PedidoOracao oracao) async {
+  Future<void> inserirPedidoOracao(PedidoOracao oracao) async {
     await atualizarDadosOracao(atualizacao: (pedidos) {
       pedidos.add(oracao);
     });
   }
 
-  static Future<void> removerOracao(int oracaoId) async {
+  Future<void> removerOracao(int oracaoId) async {
     await atualizarDadosOracao(atualizacao: (pedidos) {
       pedidos.removeWhere((element) => element.hashCode == oracaoId);
     });
   }
 
-  static Future<void> atualizarOracaoRespondida(int oracaoId) async {
+  Future<void> atualizarOracaoRespondida(int oracaoId) async {
     await atualizarDadosOracao(atualizacao: (pedidos) {
       pedidos.forEach((element) {
         if (element.hashCode == oracaoId) element.respondida = true;
@@ -40,7 +42,7 @@ class PedidosOracaoLocalData {
     });
   }
 
-  static Future<void> atualizarDadosOracao(
+  Future<void> atualizarDadosOracao(
       {Function(List<PedidoOracao>) atualizacao}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var pedidos = await listarTodosPedidosOracao();

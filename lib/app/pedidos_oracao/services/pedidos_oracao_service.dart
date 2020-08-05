@@ -1,21 +1,26 @@
-import 'package:culto_domestico_app/app/local/data/pedidos_oracao_local_data.dart';
+import 'package:culto_domestico_app/app/local/data/pedidos_oracao_repository.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
+import 'package:meta/meta.dart';
 
 class PedidosOracaoService {
+
+  final PedidosOracaoRepository repositorio;
+
+  PedidosOracaoService({@required this.repositorio});
   
   Future<List<PedidoOracao>> listarPedidosOracao() async {
-    return PedidosOracaoLocalData.listarTodosPedidosOracao();
+    return await repositorio.listarTodosPedidosOracao();
   }
 
   Future<void> inserirPedidoOracao(PedidoOracao oracao) async {
-    PedidosOracaoLocalData.inserirPedidoOracao(oracao);
+    await repositorio.inserirPedidoOracao(oracao);
   }
 
   Future<void> removerOracao(int oracaoId) async {
-    PedidosOracaoLocalData.removerOracao(oracaoId);
+    await repositorio.removerOracao(oracaoId);
   }
 
   Future<void> atualizarOracaoRespondida(int oracaoId) async {
-    PedidosOracaoLocalData.atualizarOracaoRespondida(oracaoId);
+    await repositorio.atualizarOracaoRespondida(oracaoId);
   }
 }

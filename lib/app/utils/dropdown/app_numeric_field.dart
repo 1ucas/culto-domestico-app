@@ -2,8 +2,12 @@ import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class AppNumericFormField extends TextFormField {
+
+  // Somente para testes
+  final String titulo;
+
   AppNumericFormField({
-    @required String titulo,
+    @required this.titulo,
     FormFieldValidator<String> validator,
     TextEditingController controller,
     Key key,

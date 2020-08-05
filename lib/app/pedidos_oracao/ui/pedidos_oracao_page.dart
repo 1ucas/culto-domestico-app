@@ -1,4 +1,5 @@
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
+import 'package:culto_domestico_app/app/local/data/pedidos_oracao_repository.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/services/pedidos_oracao_service.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/ui/nova_oracao_page.dart';
@@ -7,6 +8,7 @@ import 'package:culto_domestico_app/app/utils/icons/pedido_oracao_icons.dart';
 import 'package:culto_domestico_app/app/utils/lists/empty_list_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PedidosOracaoPage extends StatefulWidget {
   @override
@@ -16,9 +18,12 @@ class PedidosOracaoPage extends StatefulWidget {
 class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
   Future<List<PedidoOracao>> listaOracoes;
 
+  PedidosOracaoRepository repo;
+
   @override
   void initState() {
-    listaOracoes = PedidosOracaoService().listarPedidosOracao();
+    repo = Provider.of<PedidosOracaoRepository>(context, listen: false);
+    listaOracoes = PedidosOracaoService(repositorio: repo).listarPedidosOracao();
     super.initState();
   }
 
@@ -50,15 +55,15 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
       title: "Atenção",
     ).show(context);
     if (respondida) {
-      PedidosOracaoService().atualizarOracaoRespondida(oracaoId).then((_) {
+      PedidosOracaoService(repositorio: repo).atualizarOracaoRespondida(oracaoId).then((_) {
         setState(() {
-          listaOracoes = PedidosOracaoService().listarPedidosOracao();
+          listaOracoes = PedidosOracaoService(repositorio: repo).listarPedidosOracao();
         });
       });
     } else {
-      PedidosOracaoService().removerOracao(oracaoId).then((_) {
+      PedidosOracaoService(repositorio: repo).removerOracao(oracaoId).then((_) {
         setState(() {
-          listaOracoes = PedidosOracaoService().listarPedidosOracao();
+          listaOracoes = PedidosOracaoService(repositorio: repo).listarPedidosOracao();
         });
       });
     }
@@ -145,8 +150,9 @@ class _PedidosOracaoPageState extends State<PedidosOracaoPage> {
     Navigator.push(
             context, MaterialPageRoute(builder: (context) => NovaOracaoPage()))
         .then((value) {
-      setState(() async {
-        listaOracoes = PedidosOracaoService().listarPedidosOracao();
+      final oracoes = PedidosOracaoService(repositorio: repo).listarPedidosOracao();
+      setState(() {
+        listaOracoes = oracoes;
       });
     });
   }
