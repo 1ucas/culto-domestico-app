@@ -14,7 +14,7 @@
 - [x] Marcar oração respondida por Deus
 - [x] Limitação de capítulos de acordo com livros
 
-## Tecnologia:
+## Tecnologia / Stack:
 Flutter
 
 ## Links para Download:
