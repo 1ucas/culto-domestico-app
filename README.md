@@ -24,3 +24,6 @@ Flutter
 ## Política de Privacidade:
 
 Este App não faz uso de nenhum dado sensível nem compartilha nenhuma informação sua. Suas informações nunca saem de seu dispositivo.
+
+### Iconografia
+Ícones feitos por [Freepik](https://www.flaticon.com/authors/freepik), [bqlqn](https://www.flaticon.com/authors/bqlqn) e [monkik](https://www.flaticon.com/authors/monkik) em [flaticon.com](https://www.flaticon.com)
