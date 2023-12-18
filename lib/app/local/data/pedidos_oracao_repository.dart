@@ -8,5 +8,5 @@ abstract class PedidosOracaoRepository {
     Future<void> removerOracao(int oracaoId);
     Future<void> atualizarOracaoRespondida(int oracaoId);
     Future<void> atualizarDadosOracao(
-      {Function(List<PedidoOracao>) atualizacao});
+      {required Function(List<PedidoOracao>) atualizacao});
 }

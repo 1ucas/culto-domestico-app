@@ -6,14 +6,11 @@ import 'package:provider/provider.dart';
 
 class PlatformListDialog extends PlatformDialog {
   PlatformListDialog({
-    @required String title,
-    @required this.content,
-    @required this.defaultActionText,
+    required String title,
+    required this.content,
+    required this.defaultActionText,
     this.readonly = false
-  })  : assert(title != null),
-        assert(content != null),
-        assert(defaultActionText != null),
-        super(title: title);
+  })  : super(title: title);
 
   final List<ListDialogItem> content;
   final String defaultActionText;
@@ -43,7 +40,7 @@ class PlatformListDialog extends PlatformDialog {
           style: TextStyle(fontSize: 14, color: Colors.black87),
         ),
         onChanged: (selected) {
-          content[index].setSelected(selected);
+          content[index].setSelected(selected ?? false);
         },
       );
     }
@@ -83,9 +80,7 @@ class PlatformListDialog extends PlatformDialog {
 }
 
 abstract class ListDialogItem<T> with ChangeNotifier {
-  ListDialogItem({@required this.item, selected = false}) {
-    _selected = selected;
-  }
+  ListDialogItem({required this.item, selected = false}) : _selected = selected;
 
   T item;
   bool _selected;

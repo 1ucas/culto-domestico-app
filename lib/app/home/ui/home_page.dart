@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   void _select(AppTabItem item) {
     if (item == _currentTab) {
-      navigatorKeys[item].currentState.popUntil((route) => route.isFirst);
+      navigatorKeys[item]?.currentState?.popUntil((route) => route.isFirst);
     } else {
       setState(() {
         _currentTab = item;

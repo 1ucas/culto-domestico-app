@@ -7,7 +7,7 @@ class CultinhosLocalData {
   static Future<List<Cultinho>> listarCultinhosFeitos() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var data = prefs.get("cultinhos");
+    var data = prefs.getString("cultinhos");
     if (data != null) {
       var parsed = json.decode(data).cast<Map<String, dynamic>>();
       if (parsed != null) {
@@ -19,19 +19,19 @@ class CultinhosLocalData {
     return [];
   }
 
-  static Future<void> removerCultinho({String id}) async {
+  static Future<void> removerCultinho({required String id}) async {
     await atualizarDadosCultinhos(atualizacao: (cultinhos) {
       cultinhos.removeWhere((element) => element.id == id);
     });
   }
 
-  static Future<void> salvarNovoCultinho({Cultinho cultinho}) async {
+  static Future<void> salvarNovoCultinho({required Cultinho cultinho}) async {
     await atualizarDadosCultinhos(atualizacao: (cultinhos) {
       cultinhos.add(cultinho);
     });
   }
 
-  static Future<void> atualizarDadosCultinhos({Function(List<Cultinho>) atualizacao}) async {
+  static Future<void> atualizarDadosCultinhos({required Function(List<Cultinho>) atualizacao}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var cultinhos = await listarCultinhosFeitos();
     atualizacao(cultinhos);

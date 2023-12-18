@@ -17,13 +17,13 @@ class NovoCultinho extends StatefulWidget {
 }
 
 class _NovoCultinhoState extends State<NovoCultinho> {
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _pedidosController = TextEditingController();
-  TextEditingController _passagemLidaController = TextEditingController();
-  TextEditingController _quemOrouController = TextEditingController();
-  DateTime _dataSelecionada;
-  List<PedidoOracao> _pedidosOracao;
-  List<PassagemBiblica> _passagensLidas;
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _pedidosController = TextEditingController();
+  final TextEditingController _passagemLidaController = TextEditingController();
+  final TextEditingController _quemOrouController = TextEditingController();
+  DateTime _dataSelecionada = DateTime.now();
+  List<PedidoOracao> _pedidosOracao = [];
+  List<PassagemBiblica> _passagensLidas  = [];
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -56,11 +56,11 @@ class _NovoCultinhoState extends State<NovoCultinho> {
     final date = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
-        firstDate: DateTime.tryParse('2019-06-10T00:00:00'),
+        firstDate: DateTime.utc(2023),
         lastDate: DateTime.now());
     setState(() {
-      _dataSelecionada = date;
       if (date != null) {
+        _dataSelecionada = date;
         _dateController.text =
             "${date.day}/${date.month.toString().padLeft(2, '0')}/${date.year}";
       }
@@ -86,8 +86,8 @@ class _NovoCultinhoState extends State<NovoCultinho> {
         );
       },
     ).then((listaSelecao) {
-      var pedidosFiltrados = List<PedidoOracao>();
-      if (listaSelecao != null && listaSelecao.length > 0) {
+      List<PedidoOracao> pedidosFiltrados = [];
+      if (listaSelecao != null && listaSelecao.isNotEmpty) {
         _pedidosController.text =
             "Pedidos Escolhidos: ${listaSelecao.where((escolhido) => escolhido).length}";
         for (var i = 0; i < listaSelecao.length; i++) {
@@ -96,7 +96,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
           }
         }
       } else {
-        _pedidosController.text = null;
+        _pedidosController.text = "";
       }
 
       _pedidosOracao = pedidosFiltrados;
@@ -111,15 +111,16 @@ class _NovoCultinhoState extends State<NovoCultinho> {
       },
     ).then((value) {
       setState(() {
-        _passagensLidas = value;
-        _passagemLidaController.text =
-            value != null ? "${value.first.toString()}" : null;
+        if(value != null) {
+          _passagensLidas = value;
+          _passagemLidaController.text = value[0].toString() ?? "";
+        }
       });
     });
   }
 
   _salvarCultinho() {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState?.validate() == true) {
       final novoCultinho = Cultinho(
           data: _dataSelecionada,
           quemOrou: _quemOrouController.text,
@@ -243,9 +244,12 @@ class _NovoCultinhoState extends State<NovoCultinho> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.white, //change your color here
+        ),
         backgroundColor: AppStyle.PrimaryColor,
         actions: [
-          FlatButton(
+          TextButton(
             child: Text(
               "Salvar",
               style: TextStyle(
@@ -257,7 +261,7 @@ class _NovoCultinhoState extends State<NovoCultinho> {
             },
           )
         ],
-        title: Text("Novo Cultinho"),
+        title: const Text("Novo Cultinho", style: TextStyle(color: Colors.white)),
       ),
       body: _buildContents(),
     );

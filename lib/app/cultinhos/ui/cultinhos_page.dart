@@ -12,7 +12,7 @@ class CultinhosPage extends StatefulWidget {
 }
 
 class _CultinhosPageState extends State<CultinhosPage> {
-  Future<List<Cultinho>> cultinhos;
+  late Future<List<Cultinho>> cultinhos;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _CultinhosPageState extends State<CultinhosPage> {
                         cultinhos = CultinhoService().listarCultinhosFeitos();
                       });
                     }),
-                items: snapshot.data,
+                items: snapshot.data!,
                 separated: false,
               ),
             ),
@@ -64,7 +64,7 @@ class _CultinhosPageState extends State<CultinhosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cultinhos"),
+        title: const Text("Cultinhos", style: TextStyle(color: Colors.white)),
         backgroundColor: AppStyle.PrimaryColor,
         actions: [
           IconButton(

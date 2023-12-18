@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 
 class AppBottomBar extends StatelessWidget {
   const AppBottomBar({
-    Key key,
-    @required this.currentTab,
-    @required this.onSelectTab,
-    @required this.widgetBuilders,
-    @required this.navigatorKeys,
+    Key? key,
+    required this.currentTab,
+    required this.onSelectTab,
+    required this.widgetBuilders,
+    required this.navigatorKeys,
   }) : super(key: key);
 
   final AppTabItem currentTab;
@@ -25,7 +25,7 @@ class AppBottomBar extends StatelessWidget {
         return CupertinoTabView(
           navigatorKey: navigatorKeys[item],
           builder: (context) {
-            return widgetBuilders[item](context);
+            return item.widgetBuilder(context);
           },
         );
       },
@@ -43,16 +43,13 @@ class AppBottomBar extends StatelessWidget {
 
   BottomNavigationBarItem _buildItem(AppTabItem tabItem) {
     final color = currentTab == tabItem ? Colors.white : Colors.black54;
-    final itemData = TabItemData.allTabs[tabItem];
+    final itemData = TabItemData.allTabs[tabItem]!;
     return BottomNavigationBarItem(
       icon: Icon(
         itemData.icon,
         color: color,
       ),
-      title: Text(
-        itemData.title,
-        style: TextStyle(fontSize: 14, color: Colors.white),
-      ),
+      label: itemData.title,
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 abstract class PlatformDialog extends PlatformWidget {
-  PlatformDialog({@required this.title});
+  PlatformDialog({required this.title});
 
   final String title;
 
@@ -15,7 +15,7 @@ abstract class PlatformDialog extends PlatformWidget {
   List<PlatformDialogAction> buildActions(BuildContext context);
 
   @nonVirtual
-  Future<bool> show(BuildContext context) async {
+  Future<bool?> show(BuildContext context) async {
     return Platform.isIOS
         ? await showCupertinoDialog<bool>(
             context: context,
@@ -50,7 +50,7 @@ abstract class PlatformDialog extends PlatformWidget {
 }
 
 class PlatformDialogAction extends PlatformWidget {
-  PlatformDialogAction({this.child, this.onPressed});
+  PlatformDialogAction({required this.child, required this.onPressed});
 
   final Widget child;
   final VoidCallback onPressed;
@@ -67,7 +67,7 @@ class PlatformDialogAction extends PlatformWidget {
   @override
   @nonVirtual
   Widget buildMaterialWidget(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       child: child,
       onPressed: onPressed,
     );

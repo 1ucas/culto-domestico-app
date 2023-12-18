@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:culto_domestico_app/app/common/styles/app_styles.dart';
-import 'package:meta/meta.dart';
 
 enum Severidade { agradecimento, normal, importante, urgente }
 
@@ -35,9 +34,9 @@ class PedidoOracao {
   bool respondida;
 
   PedidoOracao(
-      {@required this.texto,
-      @required this.severidade,
-      @required this.categoria,
+      {required this.texto,
+      required this.severidade,
+      required this.categoria,
       this.respondida = false});
 
   @override
@@ -51,9 +50,10 @@ class PedidoOracao {
     if (runtimeType != other.runtimeType) {
       return false;
     }
-    return texto == other.texto &&
-        severidade == other.severidade &&
-        categoria == other.categoria;
+    final otherCultinho = other as PedidoOracao;
+    return texto == otherCultinho.texto &&
+        severidade == otherCultinho.severidade &&
+        categoria == otherCultinho.categoria;
   }
 
   PedidoOracao.fromJson(Map<String, dynamic> json)

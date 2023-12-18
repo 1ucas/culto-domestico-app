@@ -11,7 +11,7 @@ class CultinhoListTile extends StatelessWidget {
   final Cultinho cultinho;
   final void Function(String id) onDelete;
   const CultinhoListTile(
-      {Key key, @required this.cultinho, @required this.onDelete})
+      {Key? key, required this.cultinho, required this.onDelete})
       : super(key: key);
 
   get quemOrou => cultinho.quemOrou == null
@@ -90,7 +90,7 @@ class CultinhoListTile extends StatelessWidget {
     var pedidosTransformados = <PedidoOracao>[];
     cultinho.pedidosOracao.forEach((element) {
       pedidosTransformados.add(PedidoOracao(
-          categoria: element.categoria, severidade: null, texto: ""));
+          categoria: element.categoria, severidade: element.severidade, texto: ""));
     });
     var pedidosUnicos = pedidosTransformados.toSet().toList();
     var quantidades = pedidosUnicos.map((pedidoUnico) => pedidosTransformados
@@ -127,7 +127,7 @@ class CultinhoListTile extends StatelessWidget {
     final itens = cultinho.pedidosOracao
         .map((e) => PedidoOracaoListDialogItem(pedidoOracao: e))
         .toList();
-    if (itens != null && itens.length > 0) {
+    if (itens.isNotEmpty) {
       showDialog<List<bool>>(
         context: context,
         builder: (_) {

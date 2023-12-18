@@ -4,26 +4,23 @@ import 'package:flutter/material.dart';
 
 class PlatformAlertDialog extends PlatformDialog {
   PlatformAlertDialog({
-    @required String title,
-    @required this.content,
-    this.cancelActionText,
-    @required this.defaultActionText,
-  })  : assert(title != null),
-        assert(content != null),
-        assert(defaultActionText != null),
-        super(title: title);
+    required String title,
+    required this.content,
+    String? cancelActionText,
+    required this.defaultActionText,
+  }) : _cancelActionText = cancelActionText, super(title: title);
 
   final String content;
-  final String cancelActionText;
+  final String? _cancelActionText;
   final String defaultActionText;
 
   @override
   List<PlatformDialogAction> buildActions(BuildContext context) {
     final actions = <PlatformDialogAction>[];
-    if (cancelActionText != null) {
+    if (_cancelActionText != null) {
       actions.add(
         PlatformDialogAction(
-          child: Text(cancelActionText),
+          child: Text(_cancelActionText),
           onPressed: () => Navigator.of(context).pop(false),
         ),
       );

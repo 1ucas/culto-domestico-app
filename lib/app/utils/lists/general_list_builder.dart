@@ -5,9 +5,10 @@ typedef ListItemBuilder<T> = Widget Function(BuildContext context, T item);
 
 class GeneralListBuilder<T> extends StatelessWidget {
   const GeneralListBuilder(
-      {Key key,
-      @required this.items,
-      @required this.itemBuilder,
+      {
+        Key? key,
+      required this.items,
+      required this.itemBuilder,
       this.separated = true})
       : super(key: key);
 

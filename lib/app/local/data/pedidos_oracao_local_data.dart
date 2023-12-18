@@ -8,7 +8,7 @@ class PedidosOracaoLocalData extends PedidosOracaoRepository {
   Future<List<PedidoOracao>> listarTodosPedidosOracao() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var data = prefs.get("oracoes");
+    var data = prefs.getString("oracoes");
 
     if (data != null) {
       var parsed = json.decode(data).cast<Map<String, dynamic>>();
@@ -43,7 +43,7 @@ class PedidosOracaoLocalData extends PedidosOracaoRepository {
   }
 
   Future<void> atualizarDadosOracao(
-      {Function(List<PedidoOracao>) atualizacao}) async {
+      {required Function(List<PedidoOracao>) atualizacao}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var pedidos = await listarTodosPedidosOracao();
     atualizacao(pedidos);

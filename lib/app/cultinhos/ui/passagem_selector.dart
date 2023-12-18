@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class PassagemSelector extends StatefulWidget {
   final state = _PassagemSelectorState();
 
-  List<PassagemBiblica> validate() {
+  List<PassagemBiblica>? validate() {
     return state.validate();
   }
 
@@ -42,11 +42,10 @@ class _PassagemSelectorState extends State<PassagemSelector> {
 
   final _formKey = GlobalKey<FormState>();
 
-  List<PassagemBiblica> validate() {
-    var valid = _formKey.currentState.validate();
-    if (valid) {
-      var capitulos = <int>[int.tryParse(_capituloInicioTextController.text), int.tryParse(_capituloFimTextController.text)].where((value) => value != null);
-      var versiculos = <int>[int.tryParse(_versiculoInicioTextController.text), int.tryParse(_versiculoFimTextController.text)].where((value) => value != null);
+  List<PassagemBiblica>? validate() {
+    if (_formKey.currentState?.validate() == true) {
+      var capitulos = [int.tryParse(_capituloInicioTextController.text), int.tryParse(_capituloFimTextController.text)].whereType<int>();
+      var versiculos = [int.tryParse(_versiculoInicioTextController.text), int.tryParse(_versiculoFimTextController.text)].whereType<int>();
       return [
         PassagemBiblica(
             livro: _livroEscolhido,
@@ -62,12 +61,14 @@ class _PassagemSelectorState extends State<PassagemSelector> {
     return AppDropdownField<Livro>(
       titulo: "Livro",
       value: _livroEscolhido,
-      onChanged: (Livro newValue) {
-        setState(() {
-          _livroEscolhido = newValue;
-        });
+      onChanged: (Livro? newValue) {
+        if(newValue != null) {
+          setState(() {
+            _livroEscolhido = newValue;
+          });
+        }
       },
-      validator: (Livro value) {
+      validator: (Livro? value) {
         if (value == null) {
           return 'Campo Obrigatório';
         } else {
@@ -96,8 +97,8 @@ class _PassagemSelectorState extends State<PassagemSelector> {
               child: AppNumericFormField(
                   titulo: "Capítulos",
                   controller: _capituloInicioTextController,
-                  validator: (String value) {
-                    int valor = int.tryParse(value);
+                  validator: (String? value) {
+                    int? valor = value != null ? int.tryParse(value) : null;
                     if (valor == null || valor <= 0) {
                       return "Obrigatório";
                     } else if (valor > _livroEscolhido.numCapitulos) {
@@ -118,10 +119,10 @@ class _PassagemSelectorState extends State<PassagemSelector> {
               child: AppNumericFormField(
                 controller: _capituloFimTextController,
                 titulo: "Fim",
-                validator: (String value) {
-                  int valorInicial =
+                validator: (String? value) {
+                  int? valorInicial =
                       int.tryParse(_capituloInicioTextController.text);
-                  int valorFinal = int.tryParse(value);
+                  int? valorFinal = value != null ? int.tryParse(value) : null;
                   if (valorInicial != null) {
                     if (valorFinal != null &&
                         (valorFinal <= valorInicial ||
@@ -157,8 +158,8 @@ class _PassagemSelectorState extends State<PassagemSelector> {
               child: AppNumericFormField(
                   titulo: "Versículos",
                   controller: _versiculoInicioTextController,
-                  validator: (String value) {
-                    int valor = int.tryParse(value);
+                  validator: (String? value) {
+                    int? valor = value != null ? int.tryParse(value) : null;
                     if (valor == null || valor <= 0) {
                       return "Obrigatório";
                     } else {
@@ -177,10 +178,10 @@ class _PassagemSelectorState extends State<PassagemSelector> {
               child: AppNumericFormField(
                   controller: _versiculoFimTextController,
                   titulo: "Fim",
-                  validator: (String value) {
-                    int valorInicial =
+                  validator: (String? value) {
+                    int? valorInicial =
                         int.tryParse(_versiculoInicioTextController.text);
-                    int valorFinal = int.tryParse(value);
+                    int? valorFinal = value != null ? int.tryParse(value) : null;
                     bool apenasUmCapitulo =
                         int.tryParse(_capituloFimTextController.text) == null;
                     if (valorInicial != null) {

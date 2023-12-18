@@ -61,7 +61,7 @@ class PedidosOracaoMockData extends PedidosOracaoRepository {
   }
 
   Future<void> atualizarDadosOracao({
-    Function(List<PedidoOracao>) atualizacao,
+    required Function(List<PedidoOracao>) atualizacao,
   }) async {
     atualizacao(_listaPedidos);
   }

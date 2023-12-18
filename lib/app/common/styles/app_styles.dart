@@ -15,7 +15,7 @@ class AppStyle {
       children: [
         Text(
           texto,
-          style: TextStyle(fontSize: 18, color: InactiveColor),
+          style: const TextStyle(fontSize: 18, color: InactiveColor),
         ),
       ],
     );
@@ -26,7 +26,7 @@ class AppStyle {
       children: [
         Text(
           texto,
-          style: TextStyle(fontSize: 18, color: AppStyle.InactiveColor),
+          style: const TextStyle(fontSize: 18, color: AppStyle.InactiveColor),
         ),
       ],
     );
@@ -47,6 +47,6 @@ extension ToMaterialColor on Color {
       800: this.withOpacity(.9),
       900: this.withOpacity(1)
     };
-    return MaterialColor(this.value, colorMap);
+    return MaterialColor(value, colorMap);
   }
 }

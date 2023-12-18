@@ -13,7 +13,7 @@ class NovaOracaoPage extends StatefulWidget {
 }
 
 class _NovaOracaoPageState extends State<NovaOracaoPage> {
-  Categoria _categoria;
+  Categoria _categoria = Categoria.casa;
   int _severidade = 0;
   TextEditingController _textoOracaoController = TextEditingController();
   final _novaOracaoFormKey = GlobalKey<FormState>();
@@ -40,10 +40,12 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
           child: DropdownButtonFormField<Categoria>(
             key: Key('categoria-field'),
             value: _categoria,
-            onChanged: (Categoria newValue) {
-              setState(() {
-                _categoria = newValue;
-              });
+            onChanged: (Categoria? newValue) {
+              if(newValue != null) {
+                setState(() {
+                  _categoria = newValue;
+                });
+              }
             },
             validator: (value) {
               return ValidateOracaoUseCase().validarCategoria(value);
@@ -175,7 +177,7 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
 
   Future<void> _salvarOracao() async {
     final repo = Provider.of<PedidosOracaoRepository>(context, listen: false);
-    if (_novaOracaoFormKey.currentState.validate()) {
+    if (_novaOracaoFormKey.currentState?.validate() == true) {
       final oracao = PedidoOracao(
           categoria: _categoria,
           severidade: _severidadeOracao,
@@ -216,10 +218,13 @@ class _NovaOracaoPageState extends State<NovaOracaoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.white, //change your color here
+        ),
         backgroundColor: AppStyle.PrimaryColor,
-        title: Text("Nova Oração"),
+        title: const Text("Nova Oração", style: TextStyle(color: Colors.white)),
         actions: [
-          FlatButton(
+          TextButton(
             onPressed: _salvarOracao,
             child: Text(
               "Salvar",

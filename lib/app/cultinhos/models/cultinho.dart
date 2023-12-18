@@ -2,7 +2,6 @@ import 'package:culto_domestico_app/app/home/ui/models/passagem_biblica.dart';
 import 'package:culto_domestico_app/app/pedidos_oracao/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/app/utils/date/date_utils.dart';
 import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
 
 class Cultinho {
   String _identifier = UniqueKey().toString();
@@ -13,11 +12,12 @@ class Cultinho {
 
   String get id => _identifier;
 
-  Cultinho(
-      {@required this.quemOrou,
-      @required this.data,
-      this.pedidosOracao,
-      this.leituraFeita});
+  Cultinho({
+    required this.quemOrou,
+    required this.data,
+    this.pedidosOracao = const [],
+    this.leituraFeita = const []
+  });
 
   String get dia => DateUtils.toShortDateString(data);
 

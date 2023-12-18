@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppDropdownField<T> extends DropdownButtonFormField<T> {
-  AppDropdownField({FormFieldValidator<T> validator, @required String titulo, @required this.items, @required this.onChanged, T value})
+  AppDropdownField({required FormFieldValidator<T> validator, required String titulo, required this.items, required ValueChanged<T?> onChanged, T? value})
       : super(
           value: value,
           decoration: InputDecoration(
@@ -17,5 +17,4 @@ class AppDropdownField<T> extends DropdownButtonFormField<T> {
         );
 
   final List<DropdownMenuItem<T>> items;
-  final ValueChanged<T> onChanged;
 }

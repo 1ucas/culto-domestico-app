@@ -7,11 +7,11 @@ class CultinhoService {
     return await CultinhosLocalData.listarCultinhosFeitos();
   }
 
-  Future<void> removerCultinho({String id}) async {
+  Future<void> removerCultinho({required String id}) async {
     CultinhosLocalData.removerCultinho(id: id);
   }
 
-  Future<void> salvarCultinho({Cultinho cultinho}) async {
+  Future<void> salvarCultinho({required Cultinho cultinho}) async {
     CultinhosLocalData.salvarNovoCultinho(cultinho: cultinho);
   }
 }
