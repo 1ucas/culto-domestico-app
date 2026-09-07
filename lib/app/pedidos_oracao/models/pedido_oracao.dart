@@ -40,7 +40,7 @@ class PedidoOracao {
       this.respondida = false});
 
   @override
-  int get hashCode => hashValues(texto, severidade, categoria);
+  int get hashCode => Object.hash(texto, severidade, categoria);
 
   @override
   bool operator ==(other) {
