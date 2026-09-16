@@ -34,4 +34,15 @@ abstract final class Formato {
 
   static String plural(int quantidade, String singular, String plural) =>
       quantidade == 1 ? '$quantidade $singular' : '$quantidade $plural';
+
+  /// A saudação da hora. O cultinho quase sempre é de noite, e abrir o app
+  /// com um "boa noite" faz a tela parecer da casa.
+  static String saudacao([DateTime? agora]) {
+    final hora = (agora ?? DateTime.now()).hour;
+    // Quem abre o app de madrugada ainda está na noite anterior.
+    if (hora < 5) return 'Boa noite';
+    if (hora < 12) return 'Bom dia';
+    if (hora < 18) return 'Boa tarde';
+    return 'Boa noite';
+  }
 }

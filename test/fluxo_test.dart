@@ -20,6 +20,21 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  /// Marca o pedido aberto na folha de ações e fecha a tela de celebração.
+  Future<void> responderPedido(WidgetTester tester, String texto) async {
+    await tester.tap(find.text(texto));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Marcar como respondida'));
+
+    // A celebração anima em laço: aqui ela é bombeada à mão, não assentada.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(find.text('Deus respondeu'), findsOneWidget);
+
+    await tester.tap(find.text('Amém'));
+    await tester.pumpAndSettle();
+  }
+
   Future<void> criarPedido(WidgetTester tester, String texto) async {
     await tester.tap(find.text('Novo pedido').last);
     await tester.pumpAndSettle();
@@ -34,7 +49,7 @@ void main() {
     expect(find.text('Nenhum cultinho ainda'), findsOneWidget);
 
     await irParaOracoes(tester);
-    expect(find.text('Nenhum pedido aberto'), findsOneWidget);
+    expect(find.text('Nenhum pedido ainda'), findsOneWidget);
   });
 
   testWidgets('registra um pedido de oração e ele aparece na lista',
@@ -81,14 +96,10 @@ void main() {
     await abrirApp(tester);
     await irParaOracoes(tester);
     await criarPedido(tester, 'Emprego novo para o Zé');
-
-    await tester.tap(find.text('Emprego novo para o Zé'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Marcar como respondida'));
-    await tester.pumpAndSettle();
+    await responderPedido(tester, 'Emprego novo para o Zé');
 
     expect(find.text('Emprego novo para o Zé'), findsNothing);
-    expect(find.text('Nenhum pedido aberto'), findsOneWidget);
+    expect(find.text('Nada em aberto agora'), findsOneWidget);
 
     await tester.tap(find.textContaining('Respostas'));
     await tester.pumpAndSettle();
@@ -100,11 +111,7 @@ void main() {
     await abrirApp(tester);
     await irParaOracoes(tester);
     await criarPedido(tester, 'Emprego novo para o Zé');
-
-    await tester.tap(find.text('Emprego novo para o Zé'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Marcar como respondida'));
-    await tester.pumpAndSettle();
+    await responderPedido(tester, 'Emprego novo para o Zé');
 
     await tester.tap(find.textContaining('Respostas'));
     await tester.pumpAndSettle();
@@ -153,11 +160,15 @@ void main() {
     await tester.tap(find.text('Guardar cultinho'));
     await tester.pumpAndSettle();
 
-    // Uma vez no bloco de destaque, outra no cartão do histórico.
-    expect(find.text('João 3:16'), findsNWidgets(2));
-    expect(find.text('Orou Lucas'), findsOneWidget);
+    // O bloco de destaque, no topo da tela.
+    expect(find.text('João 3:16'), findsOneWidget);
     expect(find.text('1 cultinho'), findsOneWidget);
     expect(find.text('1 vez'), findsOneWidget);
+
+    // E o cartão do histórico, abaixo do ritmo e da jornada.
+    await tester.scrollUntilVisible(find.text('Orou Lucas'), 250);
+    await tester.pumpAndSettle();
+    expect(find.text('Orou Lucas'), findsOneWidget);
   });
 
   testWidgets('impede um capítulo que não existe no livro escolhido',

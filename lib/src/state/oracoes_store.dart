@@ -3,6 +3,16 @@ import 'package:flutter/foundation.dart';
 import '../data/oracoes_repository.dart';
 import '../models/pedido_oracao.dart';
 
+/// Um mês de respostas. [mes] é nulo no bloco dos pedidos migrados da v1, que
+/// foram marcados como respondidos sem que a data ficasse guardada.
+@immutable
+class MesDeRespostas {
+  const MesDeRespostas({required this.mes, required this.pedidos});
+
+  final DateTime? mes;
+  final List<PedidoOracao> pedidos;
+}
+
 class OracoesStore extends ChangeNotifier {
   OracoesStore(this._repository);
 
@@ -28,6 +38,38 @@ class OracoesStore extends ChangeNotifier {
     final lista = _pedidos.where((p) => p.respondida).toList()
       ..sort((a, b) => b.respondidaEm!.compareTo(a.respondidaEm!));
     return lista;
+  }
+
+  bool get vazio => !_carregando && _pedidos.isEmpty;
+
+  /// Respostas chegadas neste mês. Pedidos migrados da v1 não têm data e
+  /// ficam de fora da conta.
+  int get respondidasNoMes {
+    final agora = DateTime.now();
+    return _pedidos.where((p) {
+      final quando = p.respondidaEm;
+      return quando != null &&
+          quando.millisecondsSinceEpoch != 0 &&
+          quando.year == agora.year &&
+          quando.month == agora.month;
+    }).length;
+  }
+
+  /// As respostas quebradas por mês, na ordem em que [respondidos] já vem —
+  /// o que não tem data cai no último bloco.
+  List<MesDeRespostas> get respondidosPorMes {
+    final grupos = <DateTime?, List<PedidoOracao>>{};
+    for (final pedido in respondidos) {
+      final quando = pedido.respondidaEm!;
+      final mes = quando.millisecondsSinceEpoch == 0
+          ? null
+          : DateTime(quando.year, quando.month);
+      grupos.putIfAbsent(mes, () => []).add(pedido);
+    }
+    return [
+      for (final entrada in grupos.entries)
+        MesDeRespostas(mes: entrada.key, pedidos: entrada.value),
+    ];
   }
 
   Future<void> carregar() async {

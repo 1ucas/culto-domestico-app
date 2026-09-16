@@ -2,6 +2,8 @@ import 'package:culto_domestico_app/src/data/cultos_repository.dart';
 import 'package:culto_domestico_app/src/data/deposito.dart';
 import 'package:culto_domestico_app/src/data/oracoes_repository.dart';
 import 'package:culto_domestico_app/src/models/culto.dart';
+import 'package:culto_domestico_app/src/models/livro.dart';
+import 'package:culto_domestico_app/src/models/passagem.dart';
 import 'package:culto_domestico_app/src/models/pedido_oracao.dart';
 import 'package:culto_domestico_app/src/state/cultos_store.dart';
 import 'package:culto_domestico_app/src/state/oracoes_store.dart';
@@ -34,6 +36,90 @@ void main() {
 
       expect(store.cultos, hasLength(2));
       expect(store.totalNoMes, 1);
+    });
+
+    /// Uma segunda-feira [semanas] semanas atrás, para montar o ritmo sem
+    /// depender do dia em que o teste roda.
+    DateTime segundaAtras(int semanas) {
+      final hoje = DateTime.now();
+      final segunda = DateTime(
+        hoje.year,
+        hoje.month,
+        hoje.day - (hoje.weekday - DateTime.monday),
+      );
+      return DateTime(segunda.year, segunda.month, segunda.day - 7 * semanas);
+    }
+
+    test('o ritmo acende só as semanas que tiveram cultinho', () async {
+      await store.salvar(Culto.novo(data: segundaAtras(0), quemOrou: 'Lucas'));
+      await store.salvar(Culto.novo(data: segundaAtras(2), quemOrou: 'Cica'));
+
+      final ritmo = store.ritmo;
+      expect(ritmo, hasLength(CultosStore.semanasNoRitmo));
+      // A lista vai da mais antiga para a atual: a última é esta semana.
+      expect(ritmo.last, isTrue);
+      expect(ritmo[ritmo.length - 2], isFalse);
+      expect(ritmo[ritmo.length - 3], isTrue);
+    });
+
+    test('conta as semanas seguidas até a atual', () async {
+      for (var atras = 0; atras < 3; atras++) {
+        await store.salvar(
+          Culto.novo(data: segundaAtras(atras), quemOrou: 'Lucas'),
+        );
+      }
+      expect(store.semanasSeguidas, 3);
+    });
+
+    test('a semana em curso sem cultinho não quebra a sequência', () async {
+      await store.salvar(Culto.novo(data: segundaAtras(1), quemOrou: 'Lucas'));
+      await store.salvar(Culto.novo(data: segundaAtras(2), quemOrou: 'Cica'));
+
+      // Nada nesta semana ainda, e mesmo assim as duas anteriores contam.
+      expect(store.semanasSeguidas, 2);
+    });
+
+    test('sem nenhum cultinho não há sequência', () async {
+      await store.carregar();
+      expect(store.semanasSeguidas, 0);
+      expect(store.ritmo.any((s) => s), isFalse);
+    });
+
+    test('conta em quantos cultinhos cada livro foi lido', () async {
+      Passagem passagem(Livro livro) =>
+          Passagem(livro: livro, capituloInicio: 1, versiculoInicio: 1);
+
+      await store.salvar(Culto.novo(
+        data: DateTime(2026, 9, 1),
+        quemOrou: 'Lucas',
+        leituras: [passagem(Livro.salmos)],
+      ));
+      await store.salvar(Culto.novo(
+        data: DateTime(2026, 9, 8),
+        quemOrou: 'Cica',
+        // O mesmo livro duas vezes no mesmo cultinho conta uma vez só.
+        leituras: [passagem(Livro.salmos), passagem(Livro.salmos)],
+      ));
+      await store.salvar(Culto.novo(
+        data: DateTime(2026, 9, 15),
+        quemOrou: 'Lucas',
+        leituras: [passagem(Livro.joao)],
+      ));
+
+      expect(store.cultosPorLivro, {Livro.salmos: 2, Livro.joao: 1});
+      expect(store.livrosVisitados, 2);
+    });
+
+    test('agrupa o histórico por mês, do mais recente para o mais antigo',
+        () async {
+      await store.salvar(Culto.novo(data: DateTime(2026, 8, 3), quemOrou: 'A'));
+      await store.salvar(Culto.novo(data: DateTime(2026, 9, 1), quemOrou: 'B'));
+      await store.salvar(Culto.novo(data: DateTime(2026, 9, 15), quemOrou: 'C'));
+
+      final meses = store.porMes;
+      expect(meses.map((m) => m.mes), [DateTime(2026, 9), DateTime(2026, 8)]);
+      expect(meses.first.cultos.map((c) => c.quemOrou), ['C', 'B']);
+      expect(meses.last.cultos.single.quemOrou, 'A');
     });
 
     test('restaurar devolve um cultinho excluído', () async {
@@ -119,6 +205,45 @@ void main() {
       await store.adicionar(novo);
 
       expect(store.respondidos.map((p) => p.texto), ['novo', 'antigo']);
+    });
+
+    test('agrupa as respostas por mês e joga as sem data no fim', () async {
+      await store.adicionar(
+        umPedido(texto: 'setembro', respondidaEm: DateTime(2026, 9, 2)),
+      );
+      await store.adicionar(
+        umPedido(texto: 'agosto', respondidaEm: DateTime(2026, 8, 20)),
+      );
+      // Pedido migrado da v1: marcado como respondido, mas sem data guardada.
+      await store.adicionar(
+        umPedido(
+          texto: 'sem data',
+          respondidaEm: DateTime.fromMillisecondsSinceEpoch(0),
+        ),
+      );
+
+      final meses = store.respondidosPorMes;
+      expect(
+        meses.map((m) => m.mes),
+        [DateTime(2026, 9), DateTime(2026, 8), null],
+      );
+      expect(meses.last.pedidos.single.texto, 'sem data');
+    });
+
+    test('conta as respostas do mês corrente e ignora as sem data', () async {
+      final agora = DateTime.now();
+      await store.adicionar(umPedido(texto: 'deste mês', respondidaEm: agora));
+      await store.adicionar(
+        umPedido(texto: 'ano passado', respondidaEm: DateTime(agora.year - 1, agora.month, 1)),
+      );
+      await store.adicionar(
+        umPedido(
+          texto: 'sem data',
+          respondidaEm: DateTime.fromMillisecondsSinceEpoch(0),
+        ),
+      );
+
+      expect(store.respondidasNoMes, 1);
     });
   });
 }

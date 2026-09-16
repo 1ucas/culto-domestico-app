@@ -2,7 +2,7 @@ name: culto_domestico_app
 description: "Registro dos cultos domésticos da família e da lista de oração."
 publish_to: 'none'
 
-version: 2.0.0+4
+version: 2.1.0+5
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
@@ -24,6 +24,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/imagens/
 
   fonts:
     - family: PlusJakarta

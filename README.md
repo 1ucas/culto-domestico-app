@@ -13,7 +13,12 @@
 - [x] Deletar pedido de oração
 - [x] Marcar oração respondida por Deus (e voltar atrás)
 - [x] Limitação de capítulos de acordo com o livro
-- [x] Histórico com resumo do mês
+- [x] Histórico agrupado por mês, com resumo do mês corrente
+- [x] Ritmo da família: as últimas 8 semanas, e há quantas semanas seguidas
+      houve cultinho
+- [x] Jornada pela Bíblia: os 66 livros num mapa que acende conforme a família
+      lê, com a intensidade crescendo a cada releitura
+- [x] Tela de celebração quando um pedido é marcado como respondido
 - [x] Tema claro e escuro
 
 ## Tecnologia / Stack:
@@ -40,6 +45,11 @@ Este App não faz uso de nenhum dado sensível nem compartilha nenhuma informaç
 
 ### Iconografia
 Ícones feitos por [Freepik](https://www.flaticon.com/authors/freepik), [bqlqn](https://www.flaticon.com/authors/bqlqn) e [monkik](https://www.flaticon.com/authors/monkik) em [flaticon.com](https://www.flaticon.com)
+
+### Ilustrações
+
+As cinco pinturas em `assets/imagens/` foram geradas localmente com o modelo
+FLUX.2 Klein (via `ollama`) para este app, e não têm autor humano a creditar.
 
 ### Tipografia
 [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans), sob a
