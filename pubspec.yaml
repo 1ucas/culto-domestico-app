@@ -2,7 +2,7 @@ name: culto_domestico_app
 description: "Registro dos cultos domésticos da família e da lista de oração."
 publish_to: 'none'
 
-version: 2.0.0+3
+version: 2.0.0+4
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
