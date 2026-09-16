@@ -1,0 +1,9 @@
+// Copie para Signing.xcconfig e ponha o seu Team ID da Apple.
+// O arquivo real é ignorado pelo git — o equivalente iOS do
+// key.properties que o Android já usa para assinar.
+//
+//   cp ios/Flutter/Signing.xcconfig.example ios/Flutter/Signing.xcconfig
+//
+// O Team ID está em https://developer.apple.com/account -> Membership,
+// ou em: security find-identity -v -p codesigning
+DEVELOPMENT_TEAM = XXXXXXXXXX

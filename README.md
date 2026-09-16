@@ -27,6 +27,8 @@ Flutter (Material 3), `provider` para estado e `shared_preferences` para
 armazenamento local. Os dados continuam no mesmo formato das versões
 anteriores — quem já usava o app não perde o histórico ao atualizar.
 
+O mesmo código roda em Android e iOS.
+
 Para rodar:
 
 ```sh
@@ -35,9 +37,25 @@ flutter test
 flutter run
 ```
 
+No simulador iOS basta o Xcode instalado. Para rodar num iPhone de verdade, a
+assinatura fica fora do git — do mesmo jeito que o `key.properties` do Android:
+
+```sh
+cp ios/Flutter/Signing.xcconfig.example ios/Flutter/Signing.xcconfig
+# e ponha o seu Team ID da Apple no lugar de XXXXXXXXXX
+```
+
+Para instalar um build de release num iPhone pareado, use o `devicectl`; o
+`flutter install` ainda usa um caminho antigo que falha em iOS 17+:
+
+```sh
+flutter build ios --release
+xcrun devicectl device install app --device <udid> build/ios/iphoneos/Runner.app
+```
+
 ## Links para Download:
 - [X] [Android](https://play.google.com/store/apps/details?id=br.com.manobray.culto_domestico_app)
-- [ ] iOS (em construção)
+- [ ] iOS — já roda no iPhone, ainda não publicado na App Store
 
 ## Política de Privacidade:
 
